@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Levels/Platforms/Platform_Center.png" type="Texture" id=1]
+
+[sub_resource type="ImageTexture" id=1]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+normal_map = SubResource( 1 )

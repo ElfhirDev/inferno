@@ -1,0 +1,13 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "run Godot",
+            "type": "shell",
+            "command": "G:\\Dev\\Godot\\3.2.1\\Godot_v3.2.1-stable_mono_win64.exe G:\\Dev\\Godot\\3.2.1\\inferno\\Player\\Player.tscn",
+            "problemMatcher": []
+        }
+    ]
+}
