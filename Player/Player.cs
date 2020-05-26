@@ -22,7 +22,7 @@ public class Player : Area2D {
 	public override void _Ready() {
 		GD.Print("Player Ready");
 		
-		statesInfo = new String[]{"Idle","Run"};
+		statesInfo = new String[]{"Idle","Run","Attack1"};
 		machine = new FSM(statesInfo);
 
 		// On obtient la taille de l'écran visible (de la fenêtre)
@@ -67,6 +67,18 @@ public class Player : Area2D {
 		//GD.Print("on exit run");
 	 }
 
+	// ATTACK 1
+	 public void OnEnterAttack1() {
+		//GD.Print("on enter run");
+	 	animatedSprite.Animation = "attack1";
+	 }
+	 public void OnUpdateAttack1() {
+
+	 }
+	 public void OnExitAttack1() {
+		//GD.Print("on exit Attack1");
+	 }
+
 //	public override void _Input(InputEvent inputEvent) {
 //
 //	}
@@ -81,7 +93,7 @@ public class Player : Area2D {
 		velocity = new Vector2(0,0);
 		animatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
 		
-		GD.Print(machine.GetCurrentStateName());
+//		GD.Print(machine.GetCurrentStateName());
 		
 		if (machine.GetCurrentStateName() == "Idle") {
 			OnEnterIdle();
@@ -89,7 +101,9 @@ public class Player : Area2D {
 		else if (machine.GetCurrentStateName() == "Run") {
 			OnEnterRun();
 		} 
-		
+		else if (machine.GetCurrentStateName() == "Attack1") {
+			OnEnterAttack1();
+		} 	
 
 		if (Input.IsActionPressed("ui_right")) {
 			velocity.x += 50;
@@ -98,7 +112,7 @@ public class Player : Area2D {
 			velocity.x -= 50;
 		}
 		if (Input.IsActionPressed("ui_down")) {
-
+			//velocity.y += 50;
 		}
 		if (Input.IsActionPressed("ui_jump")) {
 
@@ -106,7 +120,9 @@ public class Player : Area2D {
 		if (Input.IsActionPressed("ui_sword_out")) {
 
 		}
-
+		if (Input.IsActionPressed("ui_attack1")) {
+			machine.ChangeState("Attack1");
+		}
 
 		if (velocity.Length() > 0)
 		{
@@ -149,16 +165,12 @@ public class Player : Area2D {
 		else if (machine.GetCurrentStateName() == "Run") {
 			OnUpdateRun();
 		} 
-		
+		else if (machine.GetCurrentStateName() == "Attack1") {
+			OnUpdateAttack1();
+		} 
 		Play();
 		//machine.Update();
 		
-		if (machine.GetCurrentStateName() == "Idle") {
-			OnExitIdle();
-		}
-		else if (machine.GetCurrentStateName() == "Run") {
-			OnExitRun();
-		} 
 	}
 	
 	public void Play() {
@@ -168,17 +180,17 @@ public class Player : Area2D {
 	
 	private void OnAnimatedSpriteAnimationFinished()
 	{		
-		if (animatedSprite.Animation == "jump") {
-			//STATUS_JUMP = false;
-			animatedSprite.Stop();
-		}
-		else if (animatedSprite.Animation == "attack1") {
-			//STATUS_ATTACK = false;
-			animatedSprite.Stop();
-		}		
+		if (animatedSprite.Animation == "attack1") {
+			GD.Print("Animation named " + animatedSprite.Animation + " finished");
+			machine.ChangeState("Idle");
+		}	
 	}
-
-		
+	
+	private void OnAnimatedSpriteFrameChanged()
+	{
+//		GD.Print("Animation named " + animatedSprite.Animation + ", frame " + animatedSprite.Frame);
+	}
+	
 	private void OnPlayerBodyEntered(object body)
 	{
 		Hide(); // Player disappears after being hit.
@@ -194,6 +206,7 @@ public class Player : Area2D {
 	}
 
 }
+
 
 
 

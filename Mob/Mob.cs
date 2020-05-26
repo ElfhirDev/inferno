@@ -17,7 +17,7 @@ public class Mob : RigidBody2D
 		
 		Position = new Vector2(
 			x: Mathf.Clamp(0, 0, _screenSize.x),
-			y: Mathf.Clamp(_screenSize.y - 100, 0, _screenSize.y)
+			y: Mathf.Clamp(0, 0, _screenSize.y)
 		);
 	}
 
@@ -29,6 +29,8 @@ public class Mob : RigidBody2D
 		_animatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
 		_animatedSprite.Animation =  "move";
 		
+		GD.Print(Position);
+		
 		if (_velocity.Length() > 0)
 		{
 			_velocity = _velocity.Normalized() * speed;
@@ -39,20 +41,9 @@ public class Mob : RigidBody2D
 			_animatedSprite.Stop();
 		}
 			
-		//Patrol(delta);
 	}
 	
-	public void Patrol(float delta) {
-		
-		float new_x = Mathf.Abs(Mathf.Sin(Position.x + delta)) * _screenSize.x;
-		GD.Print(new_x);
-		
-		Position = new Vector2(
-			x: Mathf.Clamp(new_x, 0, _screenSize.x),
-			y: Mathf.Clamp(_screenSize.y - 100, 0, _screenSize.y)
-		);	
-	}
-	
+
 	public void OnVisibilityScreenExited()
 	{
 		QueueFree();

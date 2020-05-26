@@ -15,7 +15,7 @@ public class Main : Node2D
 
 	public override void _Ready() {
 		GD.Print("Main Ready");
-		
+		NewGame();
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -48,26 +48,26 @@ public class Main : Node2D
 	
 	
 	private void OnMobTimerTimeout() {
+		GD.Print("OnMobTimerTimeout");
 		// Choose a random location on Path2D.
-		var mobSpawnLocation = GetNode<PathFollow2D>("MobPath/MobSpawnLocation");
-		mobSpawnLocation.SetOffset(_random.Next());
+
+		var mobStartPosition = GetNode<Position2D>("MobStartPosition");
 		
 		// Create a Mob instance and add it to the scene.
 		var mobInstance = (RigidBody2D)Mob.Instance();
 		AddChild(mobInstance);
 		
-		// Set the mob's direction perpendicular to the path direction.
-		float direction = mobSpawnLocation.Rotation + Mathf.Pi / 2;
+
 		
 		// Set the mob's position to a random location.
-		mobInstance.Position = mobSpawnLocation.Position;
+//		mobInstance.Position = mobSpawnLocation.Position;
 		
 		// Add some randomness to the direction.
-		direction += RandRange(-Mathf.Pi / 4, Mathf.Pi / 4);
-		mobInstance.Rotation = direction;
+//		direction += RandRange(-Mathf.Pi / 4, Mathf.Pi / 4);
+//		mobInstance.Rotation = direction;
 		
 		// Choose the velocity.
-		mobInstance.SetLinearVelocity(new Vector2(RandRange(150f, 250f), 0).Rotated(direction));
+//		mobInstance.SetLinearVelocity(new Vector2(RandRange(150f, 250f), 0));
 	}
 	
 	

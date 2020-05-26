@@ -3,20 +3,17 @@
 [ext_resource path="res://Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Main.cs" type="Script" id=2]
 [ext_resource path="res://Mob/Mob.tscn" type="PackedScene" id=3]
-
-[sub_resource type="Curve2D" id=1]
-_data = {
-"points": PoolVector2Array( 0, 0, 0, 0, 1024, 576, 0, 0, 0, 0, 840, 568, 0, 0, 0, 0, 624, 552, 0, 0, 0, 0, 192, 568 )
-}
+[ext_resource path="res://Levels/Level.tscn" type="PackedScene" id=4]
 
 [node name="Main" type="Node2D"]
 script = ExtResource( 2 )
 Mob = ExtResource( 3 )
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
+position = Vector2( 32, 536 )
 
 [node name="MobTimer" type="Timer" parent="."]
-wait_time = 0.5
+wait_time = 5.0
 
 [node name="ScoreTimer" type="Timer" parent="."]
 
@@ -25,17 +22,28 @@ wait_time = 2.0
 one_shot = true
 
 [node name="StartPosition" type="Position2D" parent="."]
-position = Vector2( 60, 1000 )
+position = Vector2( 60, 520 )
 __meta__ = {
 "_edit_group_": true
 }
 
-[node name="MobPath" type="Path2D" parent="."]
-curve = SubResource( 1 )
+[node name="MobStartPosition" type="Position2D" parent="."]
+position = Vector2( 960, 520 )
+__meta__ = {
+"_edit_group_": true
+}
 
-[node name="MobSpawnLocation" type="PathFollow2D" parent="MobPath"]
-position = Vector2( 1024, 576 )
-rotation = -3.09812
+[node name="StoneFloor" parent="." instance=ExtResource( 4 )]
+position = Vector2( 128, 600 )
+
+[node name="StoneFloor2" parent="." instance=ExtResource( 4 )]
+position = Vector2( 384, 600 )
+
+[node name="StoneFloor3" parent="." instance=ExtResource( 4 )]
+position = Vector2( 640, 600 )
+
+[node name="StoneFloor4" parent="." instance=ExtResource( 4 )]
+position = Vector2( 896, 600 )
 [connection signal="Hit" from="Player" to="." method="GameOver"]
 [connection signal="timeout" from="MobTimer" to="." method="OnMobTimerTimeout"]
 [connection signal="timeout" from="ScoreTimer" to="." method="OnScoreTimerTimeout"]
