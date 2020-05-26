@@ -60,7 +60,7 @@ public class Main : Node2D
 
 		
 		// Set the mob's position to a random location.
-//		mobInstance.Position = mobSpawnLocation.Position;
+		mobInstance.Position = mobStartPosition.Position;
 		
 		// Add some randomness to the direction.
 //		direction += RandRange(-Mathf.Pi / 4, Mathf.Pi / 4);

@@ -54,6 +54,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CS_FSM.cs" />
+    <Compile Include="Levels\StaticBody2D.cs" />
+    <Compile Include="Levels\StoneFloor.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Mob\Mob.cs" />
     <Compile Include="Player\Player.cs" />

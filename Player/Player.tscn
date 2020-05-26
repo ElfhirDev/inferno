@@ -39,14 +39,14 @@ animations = [ {
 "name": "run",
 "speed": 10.0
 }, {
-"frames": [ ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ) ],
-"loop": true,
-"name": "jump",
-"speed": 10.0
-}, {
 "frames": [ ExtResource( 17 ), ExtResource( 20 ), ExtResource( 19 ), ExtResource( 21 ), ExtResource( 18 ) ],
 "loop": true,
 "name": "attack1",
+"speed": 10.0
+}, {
+"frames": [ ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ) ],
+"loop": true,
+"name": "jump",
 "speed": 10.0
 }, {
 "frames": [ ExtResource( 26 ), ExtResource( 24 ), ExtResource( 25 ), ExtResource( 23 ) ],
