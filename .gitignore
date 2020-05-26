@@ -1,2 +1,4 @@
 *.import
 .mono
+.vs
+.vscode
