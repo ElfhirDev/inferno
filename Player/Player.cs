@@ -4,7 +4,7 @@ using Godot.Collections;
 using System;
 
 
-public class Player : Area2D {
+public class Player : KinematicBody2D {
 	[Signal]
 	public delegate void Hit();
 	[Export]
@@ -88,7 +88,7 @@ public class Player : Area2D {
 	}
 	
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
-  	public override void _Process(float delta) {
+  	public override void _PhysicsProcess(float delta) {
 
 		velocity = new Vector2(0,0);
 		animatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");

@@ -30,9 +30,9 @@ animations = [ {
 "name": "idle",
 "speed": 5.0
 }, {
-"frames": [ ExtResource( 6 ), ExtResource( 7 ), ExtResource( 5 ), ExtResource( 16 ) ],
+"frames": [ ExtResource( 19 ), ExtResource( 20 ), ExtResource( 21 ), ExtResource( 18 ) ],
 "loop": true,
-"name": "die",
+"name": "hurt",
 "speed": 5.0
 }, {
 "frames": [ ExtResource( 9 ), ExtResource( 15 ), ExtResource( 14 ), ExtResource( 17 ), ExtResource( 10 ) ],
@@ -40,14 +40,19 @@ animations = [ {
 "name": "attack",
 "speed": 5.0
 }, {
-"frames": [ ExtResource( 19 ), ExtResource( 20 ), ExtResource( 21 ), ExtResource( 18 ) ],
-"loop": true,
-"name": "hurt",
-"speed": 5.0
-}, {
 "frames": [ ExtResource( 11 ), ExtResource( 8 ), ExtResource( 13 ), ExtResource( 12 ) ],
 "loop": true,
-"name": "move",
+"name": "run",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 6 ), ExtResource( 7 ), ExtResource( 5 ), ExtResource( 16 ) ],
+"loop": false,
+"name": "dying",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 16 ), ExtResource( 16 ), ExtResource( 16 ), ExtResource( 16 ), null, null ],
+"loop": false,
+"name": "dead",
 "speed": 5.0
 } ]
 
@@ -55,25 +60,18 @@ animations = [ {
 radius = 18.6511
 height = 0.301086
 
-[node name="RigidBody2D" type="RigidBody2D"]
+[node name="Mob" type="KinematicBody2D"]
+position = Vector2( 933.346, 61.5378 )
 script = ExtResource( 22 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 scale = Vector2( 3, 3 )
 frames = SubResource( 1 )
-animation = "hurt"
-__meta__ = {
-"_edit_group_": true
-}
+animation = "dead"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 scale = Vector2( 3, 3 )
 shape = SubResource( 2 )
-__meta__ = {
-"_edit_group_": true
-}
 
 [node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
-__meta__ = {
-"_edit_group_": true
-}
+[connection signal="animation_finished" from="AnimatedSprite" to="." method="OnAnimatedSpriteAnimationFinished"]
