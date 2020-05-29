@@ -39,9 +39,9 @@ animations = [ {
 "name": "run",
 "speed": 10.0
 }, {
-"frames": [ ExtResource( 17 ), ExtResource( 20 ), ExtResource( 19 ), ExtResource( 21 ), ExtResource( 18 ) ],
+"frames": [ ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ) ],
 "loop": true,
-"name": "attack1",
+"name": "jump",
 "speed": 10.0
 }, {
 "frames": [ ExtResource( 14 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 22 ) ],
@@ -54,9 +54,9 @@ animations = [ {
 "name": "crouch",
 "speed": 10.0
 }, {
-"frames": [ ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ) ],
+"frames": [ ExtResource( 17 ), ExtResource( 20 ), ExtResource( 19 ), ExtResource( 21 ), ExtResource( 18 ) ],
 "loop": true,
-"name": "jump",
+"name": "attack1",
 "speed": 10.0
 } ]
 

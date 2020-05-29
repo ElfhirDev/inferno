@@ -5,7 +5,7 @@ using System;
 public class Mob : KinematicBody2D
 {
 	public bool alive = true;
-	public int speed = 100;
+	public int speed = 5;
 	public AnimatedSprite animatedSprite;
 	public CollisionShape2D collisionShape;
 	public Vector2 screenSize;
@@ -159,9 +159,22 @@ public class Mob : KinematicBody2D
 		if (velocity.Length() > 0) {
 			velocity = velocity.Normalized() * speed;
 		}
+		
+				// move on left or right
+		if (velocity.x != 0) {
+			animatedSprite.FlipV = false;
+			if (velocity.x > 0)
+			{
+				animatedSprite.FlipH = true;
+			}
+			else
+			{
+				animatedSprite.FlipH = false;
+			}
+		}
 
 //		GD.Print("Position : " + Position);
-//		GD.Print("Velocity : " + velocity);
+		GD.Print("Velocity : " + velocity);
 
 		MoveAndCollide(velocity);
 //		MoveAndSlide(velocity);
@@ -204,6 +217,7 @@ public class Mob : KinematicBody2D
 		}
 		else if (animatedSprite.Animation == "dead") {
 			GD.Print("Animation named " + animatedSprite.Animation + " finished");
+			QueueFree();
 		}
 	}
 
