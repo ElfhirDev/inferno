@@ -9,11 +9,9 @@
 script = ExtResource( 2 )
 Mob = ExtResource( 3 )
 
-[node name="Player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 32, 536 )
-
 [node name="MobTimer" type="Timer" parent="."]
 wait_time = 5.0
+one_shot = true
 
 [node name="ScoreTimer" type="Timer" parent="."]
 
@@ -22,29 +20,28 @@ wait_time = 2.0
 one_shot = true
 
 [node name="StartPosition" type="Position2D" parent="."]
-position = Vector2( 60, 520 )
+position = Vector2( 32, 80 )
 __meta__ = {
 "_edit_group_": true
 }
 
 [node name="MobStartPosition" type="Position2D" parent="."]
-position = Vector2( 960, 520 )
+position = Vector2( 752, 520 )
 __meta__ = {
 "_edit_group_": true
 }
 
 [node name="StoneFloor" parent="." instance=ExtResource( 4 )]
-position = Vector2( 128, 600 )
+position = Vector2( 308.25, 400 )
+scale = Vector2( 12.0686, 1 )
 
 [node name="StoneFloor2" parent="." instance=ExtResource( 4 )]
-position = Vector2( 384, 600 )
+position = Vector2( 576, 560 )
+scale = Vector2( 16.3431, 1 )
 
-[node name="StoneFloor3" parent="." instance=ExtResource( 4 )]
-position = Vector2( 640, 600 )
-
-[node name="StoneFloor4" parent="." instance=ExtResource( 4 )]
-position = Vector2( 896, 600 )
-[connection signal="Hit" from="Player" to="." method="GameOver"]
+[node name="Player" parent="." instance=ExtResource( 1 )]
+position = Vector2( 184, 264 )
 [connection signal="timeout" from="MobTimer" to="." method="OnMobTimerTimeout"]
 [connection signal="timeout" from="ScoreTimer" to="." method="OnScoreTimerTimeout"]
 [connection signal="timeout" from="StartTimer" to="." method="OnStartTimerTimeout"]
+[connection signal="Hit" from="Player" to="." method="GameOver"]

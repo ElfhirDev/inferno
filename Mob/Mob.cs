@@ -6,13 +6,17 @@ public class Mob : KinematicBody2D
 {
 	public bool alive = true;
 	public int speed = 5;
+	public int gravity = 4;
+	
 	public AnimatedSprite animatedSprite;
 	public CollisionShape2D collisionShape;
 	public Vector2 screenSize;
 	public Vector2 velocity = new Vector2(0,0);
 	
 	public String[] statesInfo;
-	public FSM machine;	
+	public FSM machine;
+
+
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -131,10 +135,7 @@ public class Mob : KinematicBody2D
 		else if (machine.GetCurrentStateName() == "Dead") {
 			OnEnterDead();
 		}	
-		if (velocity.Length() > 0)
-		{
-			velocity = velocity.Normalized() * speed;
-		}
+
 		
 		animatedSprite.Play();
 		
@@ -159,8 +160,9 @@ public class Mob : KinematicBody2D
 		if (velocity.Length() > 0) {
 			velocity = velocity.Normalized() * speed;
 		}
+		velocity.y = gravity;
 		
-				// move on left or right
+		// move on left or right
 		if (velocity.x != 0) {
 			animatedSprite.FlipV = false;
 			if (velocity.x > 0)
@@ -174,10 +176,10 @@ public class Mob : KinematicBody2D
 		}
 
 //		GD.Print("Position : " + Position);
-		GD.Print("Velocity : " + velocity);
+//		GD.Print("Velocity : " + velocity);
 
-		MoveAndCollide(velocity);
-//		MoveAndSlide(velocity);
+		var move = MoveAndCollide(velocity);
+//		var move = MoveAndSlide(100*velocity);
 
 		
 		if (machine.GetCurrentStateName() == "Idle") {
@@ -203,20 +205,20 @@ public class Mob : KinematicBody2D
 	private void OnAnimatedSpriteAnimationFinished()
 	{		
 		if (animatedSprite.Animation == "attack") {
-			GD.Print("Animation named " + animatedSprite.Animation + " finished");
+//			GD.Print("Animation named " + animatedSprite.Animation + " finished");
 			machine.ChangeState("Idle");
 		}
 		else if (animatedSprite.Animation == "hurt") {
-			GD.Print("Animation named " + animatedSprite.Animation + " finished");
+//			GD.Print("Animation named " + animatedSprite.Animation + " finished");
 			machine.ChangeState("Idle");
 		}
 		else if (animatedSprite.Animation == "dying") {
-			GD.Print("Animation named " + animatedSprite.Animation + " finished");
+//			GD.Print("Animation named " + animatedSprite.Animation + " finished");
 			alive = false;
 			machine.ChangeState("Dead");
 		}
 		else if (animatedSprite.Animation == "dead") {
-			GD.Print("Animation named " + animatedSprite.Animation + " finished");
+//			GD.Print("Animation named " + animatedSprite.Animation + " finished");
 			QueueFree();
 		}
 	}

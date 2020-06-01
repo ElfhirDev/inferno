@@ -8,12 +8,14 @@ public class Player : KinematicBody2D {
 	[Signal]
 	public delegate void Hit();
 	[Export]
-	public int speed = 200; // pixels per seconds
+	public int speed = 5; // pixels per seconds
+	public int gravity = 4;
 	
 	public AnimatedSprite animatedSprite;
 	public CollisionShape2D collisionShape;
 	public Vector2 screenSize;
 	public Vector2 velocity = new Vector2(0,0);
+	public Vector2 movement = new Vector2(0,0);
 	
 	public String[] statesInfo;
 	public FSM machine;	
@@ -22,7 +24,7 @@ public class Player : KinematicBody2D {
 	public override void _Ready() {
 		GD.Print("Player Ready");
 		
-		statesInfo = new String[]{"Idle","Run","Attack1"};
+		statesInfo = new String[]{"Idle","Run","Attack1","Fall"};
 		machine = new FSM(statesInfo);
 
 		// On obtient la taille de l'écran visible (de la fenêtre)
@@ -35,7 +37,7 @@ public class Player : KinematicBody2D {
 		
 		Position = new Vector2(
 			x: Mathf.Clamp(0 + 60, 0, screenSize.x),
-			y: Mathf.Clamp(screenSize.y - 100, 0, screenSize.y)
+			y: Mathf.Clamp(60, 0, screenSize.y)
 		);
 	}
 	
@@ -45,9 +47,12 @@ public class Player : KinematicBody2D {
 	 	animatedSprite.Animation = "idle";
 	 }
 	 public void OnUpdateIdle() {
-	 	if (GetSpeed() > .5) {
-	 		machine.ChangeState("Run");
-	 	}
+		if (Mathf.Abs( velocity.x ) > .5) {
+			machine.ChangeState("Run");
+		}
+		if (movement.y > .5) {
+			machine.ChangeState("Fall");
+		}
 	 }
 	 public void OnExitIdle() {
 		//GD.Print("on exit idle");
@@ -55,28 +60,45 @@ public class Player : KinematicBody2D {
 
 	// RUN
 	 public void OnEnterRun() {
-		//GD.Print("on enter run");
+//		GD.Print("on enter run");
 	 	animatedSprite.Animation = "run";
 	 }
 	 public void OnUpdateRun() {
-	 	if (GetSpeed() < .5) {
+	 	if (Mathf.Abs(velocity.x) < .5) {
 	 		machine.ChangeState("Idle");
 	 	}
+		if (Mathf.Abs(velocity.x) < .5 && movement.y > .5) {
+			machine.ChangeState("Fall");
+		}
 	 }
 	 public void OnExitRun() {
-		//GD.Print("on exit run");
+//		GD.Print("on exit run");
 	 }
 
 	// ATTACK 1
 	 public void OnEnterAttack1() {
-		//GD.Print("on enter run");
+//		GD.Print("on enter Attack1");
 	 	animatedSprite.Animation = "attack1";
 	 }
 	 public void OnUpdateAttack1() {
 
 	 }
 	 public void OnExitAttack1() {
-		//GD.Print("on exit Attack1");
+//		GD.Print("on exit Attack1");
+	 }
+	
+	// FALL
+	 public void OnEnterFall() {
+//		GD.Print("on enter fall");
+	 	animatedSprite.Animation = "fall";
+	 }
+	 public void OnUpdateFall() {
+	 	if (movement.y < 0.5) {
+	 		machine.ChangeState("Idle");
+	 	}
+	 }
+	 public void OnExitFall() {
+//		GD.Print("on exit run");
 	 }
 
 //	public override void _Input(InputEvent inputEvent) {
@@ -103,7 +125,10 @@ public class Player : KinematicBody2D {
 		} 
 		else if (machine.GetCurrentStateName() == "Attack1") {
 			OnEnterAttack1();
-		} 	
+		}
+		else if (machine.GetCurrentStateName() == "Fall") {
+			OnEnterFall();
+		}
 
 		if (Input.IsActionPressed("ui_right")) {
 			velocity.x += 50;
@@ -128,19 +153,8 @@ public class Player : KinematicBody2D {
 		{
 			// Normalized set Length to 1 ; avoiding fast diagonal movements
 			velocity = velocity.Normalized() * speed;
-
 		}
-		else if (velocity.Length() < 0)
-		{
-
-		}
-		
-		// Update Position
-		Position += velocity * delta;
-		Position = new Vector2(
-			x: Mathf.Clamp(Position.x, 0, screenSize.x),
-			y: Mathf.Clamp(Position.y, 0, screenSize.y)
-		);
+		velocity.y = gravity;
 
 		// move on left or right
 		if (velocity.x != 0) {
@@ -155,9 +169,10 @@ public class Player : KinematicBody2D {
 				animatedSprite.FlipH = false;
 			}
 		}
-		else if (velocity.x == 0 && velocity.y == 0) {
+		
+		
+		movement = MoveAndSlide(50*velocity);
 
-		}
 		
 		if (machine.GetCurrentStateName() == "Idle") {
 			OnUpdateIdle();
@@ -167,10 +182,14 @@ public class Player : KinematicBody2D {
 		} 
 		else if (machine.GetCurrentStateName() == "Attack1") {
 			OnUpdateAttack1();
-		} 
+		}
+		else if (machine.GetCurrentStateName() == "Fall") {
+			OnUpdateFall();
+		}
 		Play();
 		//machine.Update();
 		
+
 	}
 	
 	public void Play() {
@@ -181,7 +200,7 @@ public class Player : KinematicBody2D {
 	private void OnAnimatedSpriteAnimationFinished()
 	{		
 		if (animatedSprite.Animation == "attack1") {
-			GD.Print("Animation named " + animatedSprite.Animation + " finished");
+//			GD.Print("Animation named " + animatedSprite.Animation + " finished");
 			machine.ChangeState("Idle");
 		}	
 	}
@@ -189,13 +208,6 @@ public class Player : KinematicBody2D {
 	private void OnAnimatedSpriteFrameChanged()
 	{
 //		GD.Print("Animation named " + animatedSprite.Animation + ", frame " + animatedSprite.Frame);
-	}
-	
-	private void OnPlayerBodyEntered(object body)
-	{
-		Hide(); // Player disappears after being hit.
-		EmitSignal("Hit");
-		GetNode<CollisionShape2D>("CollisionShape2D").SetDeferred("disabled", true);
 	}
 	
 	public void Start(Vector2 pos)
@@ -206,9 +218,6 @@ public class Player : KinematicBody2D {
 	}
 
 }
-
-
-
 
 
 

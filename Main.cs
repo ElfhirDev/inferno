@@ -20,6 +20,7 @@ public class Main : Node2D
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(float delta) {
+		
 	  	if (Input.IsActionPressed("ui_end")) {
 			GD.Print("Main Process : ui_end");
 			GetTree().Quit();
@@ -54,10 +55,8 @@ public class Main : Node2D
 		var mobStartPosition = GetNode<Position2D>("MobStartPosition");
 		
 		// Create a Mob instance and add it to the scene.
-		var mobInstance = (RigidBody2D)Mob.Instance();
+		var mobInstance = (KinematicBody2D)Mob.Instance();
 		AddChild(mobInstance);
-		
-
 		
 		// Set the mob's position to a random location.
 		mobInstance.Position = mobStartPosition.Position;
