@@ -84,6 +84,9 @@ namespace StateMachine
 			return currentState.name;
 		}
 
+		public State GetCurrentState() {
+			return currentState;
+		}
 
 		public void Update()
 		{
