@@ -54,25 +54,15 @@ animations = [ {
 "name": "run",
 "speed": 10.0
 }, {
-"frames": [ ExtResource( 14 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 22 ) ],
-"loop": true,
-"name": "idle_w_sword",
-"speed": 4.0
-}, {
-"frames": [ ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 11 ), ExtResource( 11 ), ExtResource( 27 ), ExtResource( 27 ), ExtResource( 28 ) ],
-"loop": false,
-"name": "jump",
-"speed": 14.0
-}, {
-"frames": [ ExtResource( 27 ), ExtResource( 28 ) ],
-"loop": true,
-"name": "fall",
-"speed": 5.0
-}, {
 "frames": [ ExtResource( 26 ), ExtResource( 24 ), ExtResource( 25 ), ExtResource( 23 ) ],
 "loop": false,
 "name": "crouch",
 "speed": 10.0
+}, {
+"frames": [ ExtResource( 14 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 22 ) ],
+"loop": true,
+"name": "idle_w_sword",
+"speed": 4.0
 }, {
 "frames": [ ExtResource( 17 ), ExtResource( 20 ), ExtResource( 19 ), ExtResource( 21 ), ExtResource( 18 ) ],
 "loop": true,
@@ -83,6 +73,16 @@ animations = [ {
 "loop": true,
 "name": "air_attack2",
 "speed": 5.0
+}, {
+"frames": [ ExtResource( 27 ), ExtResource( 28 ) ],
+"loop": true,
+"name": "fall",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 11 ), ExtResource( 11 ), ExtResource( 27 ), ExtResource( 27 ), ExtResource( 28 ) ],
+"loop": false,
+"name": "jump",
+"speed": 14.0
 }, {
 "frames": [ ExtResource( 41 ), ExtResource( 35 ), ExtResource( 36 ), ExtResource( 34 ) ],
 "loop": true,
@@ -111,6 +111,10 @@ __meta__ = {
 }
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0, 20 )
 shape = SubResource( 2 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
 [connection signal="animation_finished" from="AnimatedSprite" to="." method="OnAnimatedSpriteAnimationFinished"]
 [connection signal="frame_changed" from="AnimatedSprite" to="." method="OnAnimatedSpriteFrameChanged"]

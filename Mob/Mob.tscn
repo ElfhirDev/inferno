@@ -40,14 +40,14 @@ animations = [ {
 "name": "hurt",
 "speed": 5.0
 }, {
-"frames": [ ExtResource( 6 ), ExtResource( 7 ), ExtResource( 5 ), ExtResource( 16 ) ],
-"loop": false,
-"name": "dying",
-"speed": 5.0
-}, {
 "frames": [ ExtResource( 16 ), ExtResource( 16 ), ExtResource( 16 ), ExtResource( 16 ), null, null ],
 "loop": false,
 "name": "dead",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 6 ), ExtResource( 7 ), ExtResource( 5 ), ExtResource( 16 ) ],
+"loop": false,
+"name": "dying",
 "speed": 5.0
 }, {
 "frames": [ ExtResource( 9 ), ExtResource( 15 ), ExtResource( 14 ), ExtResource( 17 ), ExtResource( 10 ) ],
@@ -56,12 +56,12 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[sub_resource type="CapsuleShape2D" id=2]
-radius = 55.0
-height = 0.0
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 32, 32 )
 
 [node name="Mob" type="KinematicBody2D"]
 position = Vector2( 933.346, 61.5378 )
+z_index = 2
 script = ExtResource( 22 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
