@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Main.cs" type="Script" id=2]
@@ -16,6 +16,9 @@ extents = Vector2( 176, 10 )
 
 [sub_resource type="SegmentShape2D" id=3]
 b = Vector2( 3360, 0 )
+
+[sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 39.9999, 13 )
 
 [sub_resource type="RectangleShape2D" id=4]
 extents = Vector2( 10, 400 )
@@ -38,7 +41,7 @@ wait_time = 2.0
 one_shot = true
 
 [node name="StartPosition" type="Position2D" parent="."]
-position = Vector2( 32, 112 )
+position = Vector2( 64, 40 )
 __meta__ = {
 "_edit_group_": true
 }
@@ -69,6 +72,7 @@ __meta__ = {
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Level/Floor_Plaftorm/StaticBody2D"]
 shape = SubResource( 1 )
+one_way_collision = true
 
 [node name="Floor_Plaftorm2" type="Sprite" parent="Level"]
 position = Vector2( 864, 600 )
@@ -83,6 +87,7 @@ __meta__ = {
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Level/Floor_Plaftorm2/StaticBody2D"]
 shape = SubResource( 1 )
+one_way_collision = true
 
 [node name="Floor_Plaftorm5" type="Sprite" parent="Level"]
 position = Vector2( 1168, 600 )
@@ -97,6 +102,7 @@ __meta__ = {
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Level/Floor_Plaftorm5/StaticBody2D"]
 shape = SubResource( 1 )
+one_way_collision = true
 
 [node name="Floor_Plaftorm3" type="Sprite" parent="Level"]
 position = Vector2( 900, 560 )
@@ -111,6 +117,7 @@ __meta__ = {
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Level/Floor_Plaftorm3/StaticBody2D"]
 shape = SubResource( 1 )
+one_way_collision = true
 
 [node name="Floor_Plaftorm4" type="Sprite" parent="Level"]
 position = Vector2( 900, 560 )
@@ -125,6 +132,7 @@ __meta__ = {
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Level/Floor_Plaftorm4/StaticBody2D"]
 shape = SubResource( 1 )
+one_way_collision = true
 
 [node name="Float_Platform" type="Sprite" parent="Level"]
 position = Vector2( 176, 136 )
@@ -138,45 +146,52 @@ __meta__ = {
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Level/Float_Platform/StaticBody2D"]
 shape = SubResource( 2 )
+one_way_collision = true
 
 [node name="Float_Platform2" type="Sprite" parent="Level"]
 position = Vector2( 512, 200 )
 z_index = 1
 texture = ExtResource( 5 )
 __meta__ = {
-"_edit_group_": true
+"_edit_group_": true,
+"_edit_lock_": true
 }
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Level/Float_Platform2"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Level/Float_Platform2/StaticBody2D"]
 shape = SubResource( 2 )
+one_way_collision = true
 
 [node name="Float_Platform3" type="Sprite" parent="Level"]
 position = Vector2( 968, 264 )
 z_index = 1
 texture = ExtResource( 5 )
 __meta__ = {
-"_edit_group_": true
+"_edit_group_": true,
+"_edit_lock_": true
 }
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Level/Float_Platform3"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Level/Float_Platform3/StaticBody2D"]
 shape = SubResource( 2 )
+one_way_collision = true
 
 [node name="Float_Platform4" type="Sprite" parent="Level"]
 position = Vector2( 512, 392 )
 z_index = 1
 texture = ExtResource( 5 )
 __meta__ = {
-"_edit_group_": true
+"_edit_group_": true,
+"_edit_lock_": true
 }
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Level/Float_Platform4"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Level/Float_Platform4/StaticBody2D"]
 shape = SubResource( 2 )
+one_way_collision = true
 
 [node name="Floor" type="Sprite" parent="Level"]
 position = Vector2( 0, 580 )
@@ -186,6 +201,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2( 0, 0, 3315, 34 )
 __meta__ = {
+"_edit_group_": true,
 "_edit_lock_": true
 }
 
@@ -193,6 +209,43 @@ __meta__ = {
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Level/Floor/StaticBody2D"]
 shape = SubResource( 3 )
+one_way_collision = true
+
+[node name="Column2" type="Sprite" parent="Level"]
+modulate = Color( 0.701961, 0.701961, 0.701961, 1 )
+position = Vector2( 1000, 496 )
+texture = ExtResource( 4 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 80, 130 )
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Level/Column2"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Level/Column2/StaticBody2D"]
+position = Vector2( 0, -45 )
+shape = SubResource( 6 )
+one_way_collision = true
+
+[node name="Column" type="Sprite" parent="Level"]
+modulate = Color( 0.701961, 0.701961, 0.701961, 1 )
+position = Vector2( 848, 448 )
+texture = ExtResource( 4 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 80, 130 )
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Level/Column"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Level/Column/StaticBody2D"]
+position = Vector2( 0, -45 )
+shape = SubResource( 6 )
+one_way_collision = true
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 scroll_base_scale = Vector2( 0.2, 1 )

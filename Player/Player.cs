@@ -18,7 +18,7 @@ public class Player : KinematicBody2D {
 	public Vector2 velocity = new Vector2(0,0);
 	public Vector2 movement = new Vector2(0,0);
 	
-	private Vector2 _UP = new Vector2(0,1);
+	private Vector2 _UP = new Vector2(0,-1);
 	
 	public bool isAttacking = false;
 	public bool isJumping = false;
@@ -145,7 +145,7 @@ public class Player : KinematicBody2D {
 				animatedSprite.FlipH = false;
 			}
 		}
-	
+		
 		movement = MoveAndSlide(velocity, _UP);
 		OnUpdate();
 		ChangeAnimation(machine.GetCurrentState());
