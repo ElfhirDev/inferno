@@ -1,17 +1,27 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Main.cs" type="Script" id=2]
 [ext_resource path="res://Mob/Mob.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Levels/Platforms/Platform_complex_1_high.png" type="Texture" id=4]
 [ext_resource path="res://Levels/Platforms/Platform_complex_1.png" type="Texture" id=5]
-[ext_resource path="res://Levels/Background/dream_by_sulamith-d2yvzyu.png" type="Texture" id=6]
+[ext_resource path="res://Levels/Background/Background-01.png" type="Texture" id=6]
+[ext_resource path="res://Levels/Platforms/Platform_Center.png" type="Texture" id=7]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 176, 56 )
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 176, 10 )
+
+[sub_resource type="SegmentShape2D" id=3]
+b = Vector2( 3360, 0 )
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 10, 400 )
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 10, 600 )
 
 [node name="Main" type="Node2D"]
 script = ExtResource( 2 )
@@ -40,36 +50,83 @@ __meta__ = {
 }
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
+visible = false
 position = Vector2( 400, 32 )
 z_index = 2
 
-[node name="Floor_Plaftorm" type="Sprite" parent="."]
-position = Vector2( 160, 552 )
+[node name="Level" type="Node2D" parent="."]
+
+[node name="Floor_Plaftorm" type="Sprite" parent="Level"]
+position = Vector2( 1944, 576 )
 z_index = 1
 texture = ExtResource( 4 )
 __meta__ = {
-"_edit_group_": true
+"_edit_group_": true,
+"_edit_lock_": true
 }
 
-[node name="StaticBody2D" type="StaticBody2D" parent="Floor_Plaftorm"]
+[node name="StaticBody2D" type="StaticBody2D" parent="Level/Floor_Plaftorm"]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor_Plaftorm/StaticBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Level/Floor_Plaftorm/StaticBody2D"]
 shape = SubResource( 1 )
 
-[node name="Floor_Plaftorm2" type="Sprite" parent="."]
-position = Vector2( 864, 552 )
+[node name="Floor_Plaftorm2" type="Sprite" parent="Level"]
+position = Vector2( 864, 600 )
 z_index = 1
 texture = ExtResource( 4 )
 __meta__ = {
-"_edit_group_": true
+"_edit_group_": true,
+"_edit_lock_": true
 }
 
-[node name="StaticBody2D" type="StaticBody2D" parent="Floor_Plaftorm2"]
+[node name="StaticBody2D" type="StaticBody2D" parent="Level/Floor_Plaftorm2"]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor_Plaftorm2/StaticBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Level/Floor_Plaftorm2/StaticBody2D"]
 shape = SubResource( 1 )
 
-[node name="Float_Platform" type="Sprite" parent="."]
+[node name="Floor_Plaftorm5" type="Sprite" parent="Level"]
+position = Vector2( 1168, 600 )
+z_index = 1
+texture = ExtResource( 4 )
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Level/Floor_Plaftorm5"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Level/Floor_Plaftorm5/StaticBody2D"]
+shape = SubResource( 1 )
+
+[node name="Floor_Plaftorm3" type="Sprite" parent="Level"]
+position = Vector2( 900, 560 )
+z_index = 1
+texture = ExtResource( 4 )
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Level/Floor_Plaftorm3"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Level/Floor_Plaftorm3/StaticBody2D"]
+shape = SubResource( 1 )
+
+[node name="Floor_Plaftorm4" type="Sprite" parent="Level"]
+position = Vector2( 900, 560 )
+z_index = 1
+texture = ExtResource( 4 )
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Level/Floor_Plaftorm4"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Level/Floor_Plaftorm4/StaticBody2D"]
+shape = SubResource( 1 )
+
+[node name="Float_Platform" type="Sprite" parent="Level"]
 position = Vector2( 176, 136 )
 z_index = 1
 texture = ExtResource( 5 )
@@ -77,12 +134,12 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="StaticBody2D" type="StaticBody2D" parent="Float_Platform"]
+[node name="StaticBody2D" type="StaticBody2D" parent="Level/Float_Platform"]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Float_Platform/StaticBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Level/Float_Platform/StaticBody2D"]
 shape = SubResource( 2 )
 
-[node name="Float_Platform2" type="Sprite" parent="."]
+[node name="Float_Platform2" type="Sprite" parent="Level"]
 position = Vector2( 512, 200 )
 z_index = 1
 texture = ExtResource( 5 )
@@ -90,12 +147,12 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="StaticBody2D" type="StaticBody2D" parent="Float_Platform2"]
+[node name="StaticBody2D" type="StaticBody2D" parent="Level/Float_Platform2"]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Float_Platform2/StaticBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Level/Float_Platform2/StaticBody2D"]
 shape = SubResource( 2 )
 
-[node name="Float_Platform3" type="Sprite" parent="."]
+[node name="Float_Platform3" type="Sprite" parent="Level"]
 position = Vector2( 968, 264 )
 z_index = 1
 texture = ExtResource( 5 )
@@ -103,12 +160,12 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="StaticBody2D" type="StaticBody2D" parent="Float_Platform3"]
+[node name="StaticBody2D" type="StaticBody2D" parent="Level/Float_Platform3"]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Float_Platform3/StaticBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Level/Float_Platform3/StaticBody2D"]
 shape = SubResource( 2 )
 
-[node name="Float_Platform4" type="Sprite" parent="."]
+[node name="Float_Platform4" type="Sprite" parent="Level"]
 position = Vector2( 512, 392 )
 z_index = 1
 texture = ExtResource( 5 )
@@ -116,21 +173,63 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="StaticBody2D" type="StaticBody2D" parent="Float_Platform4"]
+[node name="StaticBody2D" type="StaticBody2D" parent="Level/Float_Platform4"]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Float_Platform4/StaticBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Level/Float_Platform4/StaticBody2D"]
 shape = SubResource( 2 )
 
+[node name="Floor" type="Sprite" parent="Level"]
+position = Vector2( 0, 580 )
+z_index = 1
+texture = ExtResource( 7 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 0, 0, 3315, 34 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Level/Floor"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Level/Floor/StaticBody2D"]
+shape = SubResource( 3 )
+
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+scroll_base_scale = Vector2( 0.2, 1 )
+scroll_limit_begin = Vector2( 50, 50 )
+scroll_limit_end = Vector2( 3000, 700 )
+scroll_ignore_camera_zoom = true
 
 [node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
 z_index = -1
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="Sprite" type="Sprite" parent="ParallaxBackground/ParallaxLayer"]
-position = Vector2( 464, 304 )
-scale = Vector2( 4.87015, 4.87015 )
+position = Vector2( -200, -300 )
 z_index = -1
 texture = ExtResource( 6 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 0, 0, 3288, 1200 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+visible = false
+position = Vector2( 0, 300 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+shape = SubResource( 4 )
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="."]
+visible = false
+position = Vector2( 3080, 0 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
+shape = SubResource( 5 )
 [connection signal="timeout" from="MobTimer" to="." method="OnMobTimerTimeout"]
 [connection signal="timeout" from="ScoreTimer" to="." method="OnScoreTimerTimeout"]
 [connection signal="timeout" from="StartTimer" to="." method="OnStartTimerTimeout"]
