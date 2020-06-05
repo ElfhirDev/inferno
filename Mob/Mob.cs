@@ -227,6 +227,10 @@ public class Mob : KinematicBody2D
 	{
 		QueueFree();
 	}
+	
+	public void MobDie() {
+		machine.ChangeState("Dying");
+	}
 }
 
 

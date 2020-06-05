@@ -14,6 +14,8 @@ public class Player : KinematicBody2D {
 	
 	public AnimatedSprite animatedSprite;
 	public CollisionShape2D collisionShape;
+	public Area2D attack1Area;
+	public CollisionShape2D swordShape;
 	public Vector2 screenSize;
 	public Vector2 velocity = new Vector2(0,0);
 	public Vector2 movement = new Vector2(0,0);
@@ -40,6 +42,9 @@ public class Player : KinematicBody2D {
 		
 		animatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
 		collisionShape = GetNode<CollisionShape2D>("CollisionShape2D");
+		attack1Area = GetNode<Area2D>("Attack1Area");
+		swordShape = GetNode<CollisionShape2D>("Attack1Area/SwordShape");
+		
 		animatedSprite.Play();
 	}
 	
@@ -48,7 +53,9 @@ public class Player : KinematicBody2D {
 	}
 	
 	public void OnEnter() {
-
+		if (machine.GetCurrentStateName() == "Attack1") {
+			Attack1();
+		}
 	}
 	public void OnUpdate() {
 //		GD.Print(movement);
@@ -139,6 +146,7 @@ public class Player : KinematicBody2D {
 			if (velocity.x < 0)
 			{
 				animatedSprite.FlipH = true;
+				
 			}
 			else
 			{
@@ -160,12 +168,17 @@ public class Player : KinematicBody2D {
 		
 	}
 	
+	public void Attack1() {
+		swordShape.Disabled = false;
+	}
+	
 	
 	private void OnAnimatedSpriteAnimationFinished()
 	{		
 		if (animatedSprite.Animation == "attack1") {
 //			GD.Print("Animation named " + animatedSprite.Animation + " finished");
 			isAttacking = false;
+			swordShape.Disabled = true;
 			machine.ChangeState("Idle");
 		}
 		else if (animatedSprite.Animation == "jump") {
@@ -173,6 +186,14 @@ public class Player : KinematicBody2D {
 			isJumping = false;
 			machine.ChangeState("Idle");
 		}
+	}
+	
+	private void OnAttack1AreaBodyEntered(Mob body)
+	{
+		if (body.HasMethod("MobDie")) {
+			body.MobDie();
+		}
+			
 	}
 	
 	private void OnAnimatedSpriteFrameChanged()
@@ -188,6 +209,9 @@ public class Player : KinematicBody2D {
 	}
 
 }
+
+
+
 
 
 

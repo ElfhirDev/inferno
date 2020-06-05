@@ -9,21 +9,21 @@
 [ext_resource path="res://Levels/Platforms/Platform_Center.png" type="Texture" id=7]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 176, 56 )
+extents = Vector2( 176, 62 )
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 176, 10 )
+extents = Vector2( 176, 14 )
 
 [sub_resource type="SegmentShape2D" id=3]
 b = Vector2( 3360, 0 )
 
-[sub_resource type="RectangleShape2D" id=6]
+[sub_resource type="RectangleShape2D" id=4]
 extents = Vector2( 39.9999, 13 )
 
-[sub_resource type="RectangleShape2D" id=4]
+[sub_resource type="RectangleShape2D" id=5]
 extents = Vector2( 10, 400 )
 
-[sub_resource type="RectangleShape2D" id=5]
+[sub_resource type="RectangleShape2D" id=6]
 extents = Vector2( 10, 600 )
 
 [node name="Main" type="Node2D"]
@@ -53,7 +53,6 @@ __meta__ = {
 }
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
-visible = false
 position = Vector2( 400, 32 )
 z_index = 2
 
@@ -139,7 +138,8 @@ position = Vector2( 176, 136 )
 z_index = 1
 texture = ExtResource( 5 )
 __meta__ = {
-"_edit_group_": true
+"_edit_group_": true,
+"_edit_lock_": true
 }
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Level/Float_Platform"]
@@ -147,6 +147,9 @@ __meta__ = {
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Level/Float_Platform/StaticBody2D"]
 shape = SubResource( 2 )
 one_way_collision = true
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="Float_Platform2" type="Sprite" parent="Level"]
 position = Vector2( 512, 200 )
@@ -225,8 +228,8 @@ __meta__ = {
 [node name="StaticBody2D" type="StaticBody2D" parent="Level/Column2"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Level/Column2/StaticBody2D"]
-position = Vector2( 0, -45 )
-shape = SubResource( 6 )
+position = Vector2( 0, -48 )
+shape = SubResource( 4 )
 one_way_collision = true
 
 [node name="Column" type="Sprite" parent="Level"]
@@ -243,8 +246,8 @@ __meta__ = {
 [node name="StaticBody2D" type="StaticBody2D" parent="Level/Column"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Level/Column/StaticBody2D"]
-position = Vector2( 0, -45 )
-shape = SubResource( 6 )
+position = Vector2( 0, -48 )
+shape = SubResource( 4 )
 one_way_collision = true
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
@@ -275,14 +278,14 @@ visible = false
 position = Vector2( 0, 300 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-shape = SubResource( 4 )
+shape = SubResource( 5 )
 
 [node name="StaticBody2D2" type="StaticBody2D" parent="."]
 visible = false
 position = Vector2( 3080, 0 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
-shape = SubResource( 5 )
+shape = SubResource( 6 )
 [connection signal="timeout" from="MobTimer" to="." method="OnMobTimerTimeout"]
 [connection signal="timeout" from="ScoreTimer" to="." method="OnScoreTimerTimeout"]
 [connection signal="timeout" from="StartTimer" to="." method="OnStartTimerTimeout"]
