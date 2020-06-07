@@ -57,6 +57,7 @@
     <Compile Include="Levels\StaticBody2D.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Mob\Mob.cs" />
+    <Compile Include="Player\Hero.cs" />
     <Compile Include="Player\Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
