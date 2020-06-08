@@ -53,12 +53,13 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actors\Actor.cs" />
+    <Compile Include="Actors\Hero\Hero.cs" />
+    <Compile Include="Actors\Hero\Magic.cs" />
+    <Compile Include="Actors\Mob\Mob.cs" />
     <Compile Include="CS_FSM.cs" />
     <Compile Include="Levels\StaticBody2D.cs" />
     <Compile Include="Main.cs" />
-    <Compile Include="Mob\Mob.cs" />
-    <Compile Include="Player\Hero.cs" />
-    <Compile Include="Player\Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

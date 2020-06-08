@@ -39,9 +39,9 @@ public class Main : Node2D
 	public void NewGame() {
 		_score = 0;
 		
-		var player = GetNode<Player>("Player");
-		var startPosition = GetNode<Position2D>("StartPosition");
-		player.Start(startPosition.Position);
+//		var player = GetNode<Player>("Player");
+//		var startPosition = GetNode<Position2D>("StartPosition");
+//		player.Start(startPosition.Position);
 		
 		GetNode<Timer>("StartTimer").Start();
 	}

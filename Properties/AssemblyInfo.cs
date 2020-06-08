@@ -4,11 +4,11 @@ using System.Reflection;
 // Change them to the values specific to your project.
 
 [assembly: AssemblyTitle("inferno")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Basic platform game for training")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("")]
-[assembly: AssemblyCopyright("")]
+[assembly: AssemblyCopyright("Jérémy Ta")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
