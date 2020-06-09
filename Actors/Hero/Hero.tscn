@@ -1,11 +1,14 @@
-[gd_scene load_steps=73 format=2]
+[gd_scene load_steps=76 format=2]
 
 [ext_resource path="res://Actors/Hero/Hero.cs" type="Script" id=1]
 [ext_resource path="res://Actors/Adventurer-1.5/adventurer-v2-Sheet.png" type="Texture" id=2]
 [ext_resource path="res://Actors/Hero/Magic.cs" type="Script" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 40, 54 )
+extents = Vector2( 20, 54 )
+
+[sub_resource type="RectangleShape2D" id=70]
+extents = Vector2( 20, 38 )
 
 [sub_resource type="AnimationNodeAnimation" id=2]
 animation = "air_attack1"
@@ -101,6 +104,10 @@ animation = "run"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=40]
 
+[sub_resource type="AnimationNodeStateMachineTransition" id=71]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=72]
+
 [sub_resource type="AnimationNodeStateMachine" id=41]
 states/air_attack1/node = SubResource( 2 )
 states/air_attack1/position = Vector2( 83, 81 )
@@ -134,7 +141,7 @@ states/jump/node = SubResource( 16 )
 states/jump/position = Vector2( 322, 214 )
 states/run/node = SubResource( 17 )
 states/run/position = Vector2( 489, 340 )
-transitions = [ "idle", "run", SubResource( 18 ), "run", "idle", SubResource( 19 ), "idle", "jump", SubResource( 20 ), "jump", "idle", SubResource( 21 ), "idle", "die", SubResource( 22 ), "jump", "fall", SubResource( 23 ), "hang", "climb", SubResource( 24 ), "climb", "idle", SubResource( 25 ), "fall", "idle", SubResource( 26 ), "idle", "attack1", SubResource( 27 ), "attack1", "idle", SubResource( 28 ), "idle", "attack2", SubResource( 29 ), "attack2", "idle", SubResource( 30 ), "idle", "attack3", SubResource( 31 ), "attack3", "idle", SubResource( 32 ), "jump", "air_attack1", SubResource( 33 ), "jump", "air_attack2", SubResource( 34 ), "fall", "air_attack3", SubResource( 35 ), "fall", "air_attack_end", SubResource( 36 ), "air_attack1", "fall", SubResource( 37 ), "air_attack2", "fall", SubResource( 38 ), "air_attack3", "air_attack_end", SubResource( 39 ), "air_attack_end", "fall", SubResource( 40 ) ]
+transitions = [ "idle", "run", SubResource( 18 ), "run", "idle", SubResource( 19 ), "idle", "jump", SubResource( 20 ), "jump", "idle", SubResource( 21 ), "idle", "die", SubResource( 22 ), "jump", "fall", SubResource( 23 ), "hang", "climb", SubResource( 24 ), "climb", "idle", SubResource( 25 ), "fall", "idle", SubResource( 26 ), "idle", "attack1", SubResource( 27 ), "attack1", "idle", SubResource( 28 ), "idle", "attack2", SubResource( 29 ), "attack2", "idle", SubResource( 30 ), "idle", "attack3", SubResource( 31 ), "attack3", "idle", SubResource( 32 ), "jump", "air_attack1", SubResource( 33 ), "jump", "air_attack2", SubResource( 34 ), "fall", "air_attack3", SubResource( 35 ), "fall", "air_attack_end", SubResource( 36 ), "air_attack1", "fall", SubResource( 37 ), "air_attack2", "fall", SubResource( 38 ), "air_attack3", "air_attack_end", SubResource( 39 ), "air_attack_end", "fall", SubResource( 40 ), "idle", "crouch", SubResource( 71 ), "crouch", "idle", SubResource( 72 ) ]
 start_node = "idle"
 end_node = "die"
 
@@ -283,6 +290,7 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id=51]
+loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -327,6 +335,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id=54]
 length = 0.5
+loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -370,6 +379,7 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id=57]
+loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -384,6 +394,7 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id=58]
+loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -486,7 +497,8 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id=65]
-length = 3.0
+length = 1.2
+loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -494,7 +506,7 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.5, 1, 1.5, 2, 2.5 ),
+"times": PoolRealArray( 0, 0.2, 0.4, 0.6, 0.8, 1 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
 "update": 1,
 "values": [ 8, 9, 10, 11, 12, 13 ]
@@ -561,7 +573,7 @@ scale = Vector2( 4, 4 )
 texture = ExtResource( 2 )
 vframes = 16
 hframes = 7
-frame = 3
+frame = 10
 region_rect = Rect2( 0, 0, 49, 42 )
 
 [node name="Magic" type="Position2D" parent="Sprite"]
@@ -569,10 +581,15 @@ script = ExtResource( 4 )
 
 [node name="Cooldown" type="Timer" parent="Sprite/Magic"]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="Standing" type="CollisionShape2D" parent="."]
 modulate = Color( 0.309804, 0.254902, 0.254902, 1 )
 position = Vector2( 0, 22 )
 shape = SubResource( 1 )
+
+[node name="Crouch" type="CollisionShape2D" parent="."]
+position = Vector2( 0, 38 )
+shape = SubResource( 70 )
+disabled = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true

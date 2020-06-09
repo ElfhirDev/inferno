@@ -14,14 +14,13 @@ public class Hero : Actor
 
 	public Area2D attackArea;
 	public Camera2D camera;
-	public CollisionShape2D collisionShape;
+	public CollisionShape2D collisionShapeStanding, collisionShapeCrouch;
 	public Timer magicTimer;
 	public RayCast2D rayJump;
 	public Sprite sprite;
 	public CollisionShape2D swordShape;
 
 	public Vector2 screenSize;
-	public Vector2 movement = new Vector2(0,0);
 	
 	public const float FLOOR_DETECT_DISTANCE = 50.0f;
 	
@@ -33,15 +32,17 @@ public class Hero : Actor
 		animationTree = GetNode<AnimationTree>("AnimationTree");
 		attackArea = GetNode<Area2D>("AttackArea");
 		camera = GetNode<Camera2D>("Camera2D");
-		collisionShape = GetNode<CollisionShape2D>("CollisionShape2D");
+		collisionShapeStanding = GetNode<CollisionShape2D>("Standing");
+		collisionShapeCrouch = GetNode<CollisionShape2D>("Crouch");
 		magicTimer = GetNode<Timer>("MagicAnimation");
 		rayJump = GetNode<RayCast2D>("RayJump");
 		sprite = GetNode<Sprite>("Sprite");
 		swordShape = GetNode<CollisionShape2D>("AttackArea/SwordShape");
 		
-		stateMachine = (AnimationNodeStateMachinePlayback)animationTree.Get("parameters/StateMachine/playback");
+		stateMachine = (AnimationNodeStateMachinePlayback)animationTree.Get("parameters/playback");
 		
 		GD.Print("Hero Ready");
+//		GD.Print(stateMachine);
 	}
 	
 	// We use separate functions to calculate the direction and velocity to make this one easier to read.
@@ -56,7 +57,6 @@ public class Hero : Actor
 		Vector2 direction = GetDirection();
 		
 		velocity.y += float.Parse(gravity.ToString()) * delta;
-		GD.Print(velocity.y);
 		
 		bool isJumpInterrupted = (Input.IsActionJustReleased("ui_jump") && (velocity.y < 0.0));
 		velocity =  CalculateMoveVelocity(velocity, direction, speed, isJumpInterrupted);
@@ -70,25 +70,19 @@ public class Hero : Actor
 				
 		bool isOnPlatform = rayJump.IsColliding();
 		
-		GD.Print(isOnPlatform);
-		
 		// move on surface and snap on it
 		velocity = MoveAndSlideWithSnap(
 			velocity, snapVector, FLOOR_NORMAL, !isOnPlatform, 4, 0.9f, false
 		);
 		
-		GD.Print(velocity);
-		
 		// flip sprite on left/right
 		if (direction.x != 0) {
-			float current_x = sprite.Scale.x;
-			float current_y = sprite.Scale.y;
-			
+						
 			if (direction.x > 0) {
-				sprite.SetScale(new Vector2(1 * current_x, current_y));
+				sprite.FlipH = false;
 			}
 			else {
-				sprite.SetScale(new Vector2(-1 * current_x, current_y));
+				sprite.FlipH = true;
 			}
 		}
 		
@@ -99,10 +93,15 @@ public class Hero : Actor
 //		}
 
 		string animation = GetNewAnimation(isMagicCasting);
-				
+		
 		// && magicTimer.IsStopped()
 		if (animation != animationPlayer.CurrentAnimation) {
-			
+			if (!collisionShapeCrouch.IsDisabled()) {
+				collisionShapeCrouch.Disabled = true;
+			}
+			if (collisionShapeStanding.IsDisabled()) {
+				collisionShapeStanding.Disabled = false;
+			}
 //			GD.Print(
 //				"animation " + animation + 
 //				" ; animationPlayer.CurrentAnimation " + 
@@ -112,7 +111,22 @@ public class Hero : Actor
 			if (isMagicCasting) {
 				magicTimer.Start();
 			}
-			animationPlayer.Play(animation);
+			
+			if (animation == "crouch") {
+				Crouch();
+			}
+			else if (animation == "fall") {
+				Fall();
+			}
+			else if (animation == "idle") {
+				Idle();
+			}
+			else if (animation == "jump") {
+				Jump();
+			}
+			else if (animation == "run") {
+				Run();
+			}
 		}
 		
 	}
@@ -154,21 +168,23 @@ public class Hero : Actor
 	}
 	
 	public string GetNewAnimation(bool isMagicCasting = false) {
-		string newAnimation = "";
+		string newAnimation = animationPlayer.CurrentAnimation;
 		if (IsOnFloor()) {
-			
-			GD.Print("Is on floor");
 			newAnimation = "idle";
 			
 			if (Mathf.Abs(velocity.x) > 0.1f) {
 				newAnimation = "run";
 			} 
 			else {
-				newAnimation = "idle";
+				if (Input.IsActionPressed("ui_down")) {
+					newAnimation = "crouch";
+				}
+				else {
+					newAnimation = "idle";
+				}
 			}
 		}
 		else {
-			
 			
 			if (velocity.y > 0) {
 				newAnimation = "fall";
@@ -184,8 +200,25 @@ public class Hero : Actor
 		return newAnimation;
 	}
 	
+	public void Crouch() {
+		stateMachine.Travel("crouch");
+		if (collisionShapeCrouch.IsDisabled()) {
+			collisionShapeCrouch.Disabled = false;
+		}
+		if (!collisionShapeStanding.IsDisabled()) {
+			collisionShapeStanding.Disabled = true;
+		}
+	}	
+	public void Fall() {
+		stateMachine.Travel("fall");
+	}
+	public void Idle() {
+		stateMachine.Travel("idle");
+	}
+	public void Jump() {
+		stateMachine.Travel("jump");
+	}
 	public void Run() {
 		stateMachine.Travel("run");
 	}
-
 }

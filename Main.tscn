@@ -31,6 +31,7 @@ script = ExtResource( 2 )
 Mob = ExtResource( 3 )
 
 [node name="Hero" parent="." instance=ExtResource( 1 )]
+z_index = 2
 
 [node name="MobTimer" type="Timer" parent="."]
 wait_time = 5.0
