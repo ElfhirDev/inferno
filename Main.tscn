@@ -31,6 +31,7 @@ script = ExtResource( 2 )
 Mob = ExtResource( 3 )
 
 [node name="Hero" parent="." instance=ExtResource( 1 )]
+position = Vector2( 72, -224 )
 z_index = 2
 
 [node name="MobTimer" type="Timer" parent="."]
@@ -44,7 +45,7 @@ wait_time = 2.0
 one_shot = true
 
 [node name="StartPosition" type="Position2D" parent="."]
-position = Vector2( 64, 40 )
+position = Vector2( 120, -232 )
 __meta__ = {
 "_edit_group_": true
 }
@@ -133,12 +134,11 @@ shape = SubResource( 1 )
 one_way_collision = true
 
 [node name="Float_Platform" type="Sprite" parent="Level"]
-position = Vector2( 176, 136 )
+position = Vector2( 176, -112 )
 z_index = 1
 texture = ExtResource( 5 )
 __meta__ = {
-"_edit_group_": true,
-"_edit_lock_": true
+"_edit_group_": true
 }
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Level/Float_Platform"]

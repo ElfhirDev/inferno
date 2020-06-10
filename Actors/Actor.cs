@@ -5,7 +5,7 @@ using Godot.Collections;
 public class Actor : KinematicBody2D
 {
 	[Export]
-	protected Vector2 speed = new Vector2(150.0f, 350.0f);
+	protected Vector2 speed = new Vector2(190.0f, 350.0f);
 	
 	protected object gravity = ProjectSettings.GetSetting("physics/2d/default_gravity");
 	protected Vector2 FLOOR_NORMAL = Vector2.Up;

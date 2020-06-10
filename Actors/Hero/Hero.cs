@@ -13,9 +13,10 @@ public class Hero : Actor
 	public AnimationNodeStateMachinePlayback stateMachine;	
 
 	public Area2D attackArea;
+	public Timer attackTimer;
 	public Camera2D camera;
 	public CollisionShape2D collisionShapeStanding, collisionShapeCrouch;
-	public Timer magicTimer;
+//	public Timer magicTimer;
 	public RayCast2D rayJump;
 	public Sprite sprite;
 	public CollisionShape2D swordShape;
@@ -29,16 +30,15 @@ public class Hero : Actor
 		screenSize = GetViewport().Size;
 
 		animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
+		attackTimer = GetNode<Timer>("AttackTimer");
 		animationTree = GetNode<AnimationTree>("AnimationTree");
 		attackArea = GetNode<Area2D>("AttackArea");
 		camera = GetNode<Camera2D>("Camera2D");
 		collisionShapeStanding = GetNode<CollisionShape2D>("Standing");
 		collisionShapeCrouch = GetNode<CollisionShape2D>("Crouch");
-		magicTimer = GetNode<Timer>("MagicAnimation");
+//		magicTimer = GetNode<Timer>("MagicAnimation");
 		rayJump = GetNode<RayCast2D>("RayJump");
 		sprite = GetNode<Sprite>("Sprite");
-		swordShape = GetNode<CollisionShape2D>("AttackArea/SwordShape");
-		
 		stateMachine = (AnimationNodeStateMachinePlayback)animationTree.Get("parameters/playback");
 		
 		GD.Print("Hero Ready");
@@ -56,10 +56,16 @@ public class Hero : Actor
 	public override void _PhysicsProcess(float delta) {
 		Vector2 direction = GetDirection();
 		
-		velocity.y += float.Parse(gravity.ToString()) * delta;
+		// default gravity is too weak but I want to keep the 9.81 value.
+		velocity.y += 4.0f * float.Parse(gravity.ToString()) * delta;
 		
-		bool isJumpInterrupted = (Input.IsActionJustReleased("ui_jump") && (velocity.y < 0.0));
-		velocity =  CalculateMoveVelocity(velocity, direction, speed, isJumpInterrupted);
+		bool isJumpInterrupted = (
+			Input.IsActionJustPressed("ui_jump")
+		);
+		
+		velocity = CalculateMoveVelocity(
+			velocity, direction, speed, isJumpInterrupted
+		);
 		
 		Vector2 snapVector = Vector2.Zero;
 		if (direction.y == 0.0) {
@@ -77,24 +83,42 @@ public class Hero : Actor
 		
 		// flip sprite on left/right
 		if (direction.x != 0) {
-						
+			Vector2 initialScale = GetScale();
+			
 			if (direction.x > 0) {
-				sprite.FlipH = false;
+//				sprite.FlipH = false;
+				Vector2 newScale = new Vector2(
+					Mathf.Sign(initialScale.y) * initialScale.x, 
+					initialScale.y
+				);
+					
+				SetScale(newScale);
 			}
 			else {
-				sprite.FlipH = true;
+//				sprite.FlipH = true;
+				Vector2 newScale = new Vector2(
+					-1.0f * Mathf.Sign(initialScale.y) * initialScale.x, 
+					initialScale.y
+				);
+				SetScale(newScale);
 			}
+			
 		}
+		
 		
 		// TODO casting magic 
 		bool isMagicCasting = false;
-//		if (Input.is_action_just_pressed("ui_magic" + action_suffix)) {
-//			isMagicCasting = 
+//		if (Input.IsActionJustPressed("ui_magic")) {
+//			isMagicCasting = true; 
 //		}
-
-		string animation = GetNewAnimation(isMagicCasting);
 		
-		// && magicTimer.IsStopped()
+		if (Input.IsActionJustReleased("ui_attack") && attackTimer.IsStopped()) {
+			attackTimer.Start();
+		}
+
+		string animation = GetNewAnimation();
+		
+		// if we have a new animation, we will Travel to it
 		if (animation != animationPlayer.CurrentAnimation) {
 			if (!collisionShapeCrouch.IsDisabled()) {
 				collisionShapeCrouch.Disabled = true;
@@ -102,17 +126,17 @@ public class Hero : Actor
 			if (collisionShapeStanding.IsDisabled()) {
 				collisionShapeStanding.Disabled = false;
 			}
-//			GD.Print(
-//				"animation " + animation + 
-//				" ; animationPlayer.CurrentAnimation " + 
-//				animationPlayer.CurrentAnimation
-//			);
 
-			if (isMagicCasting) {
-				magicTimer.Start();
+			if (animation == "attack1") {
+				Attack(1);
 			}
-			
-			if (animation == "crouch") {
+			else if (animation == "airAttack") {
+				AirAttack(1);
+			}
+			else if (animation == "airAttackEnd") {
+				AirAttack(0);
+			}
+			else if (animation == "crouch") {
 				Crouch();
 			}
 			else if (animation == "fall") {
@@ -126,6 +150,9 @@ public class Hero : Actor
 			}
 			else if (animation == "run") {
 				Run();
+			}
+			else if (animation == "runAttack1") {
+				RunAttack(1);
 			}
 		}
 		
@@ -144,9 +171,9 @@ public class Hero : Actor
 		if (direction.y != 0.0f) {
 			velocity.y = speed.y * direction.y;
 		}
-		if (isJumpInterrupted) {
-			velocity.y = 0.0f;
-		}
+//		if (isJumpInterrupted) {
+//			velocity.y = 0.0f;
+//		}
 		return velocity;
 	}
 	
@@ -157,7 +184,7 @@ public class Hero : Actor
 		float y = 0;
 		
 		if (IsOnFloor() && Input.IsActionJustPressed("ui_jump")) {
-			y = -1;
+			y =  - 1;
 		}
 		else {
 			y = 0;
@@ -167,16 +194,23 @@ public class Hero : Actor
 		return direction;
 	}
 	
-	public string GetNewAnimation(bool isMagicCasting = false) {
+	public string GetNewAnimation() {
 		string newAnimation = animationPlayer.CurrentAnimation;
 		if (IsOnFloor()) {
-			newAnimation = "idle";
 			
 			if (Mathf.Abs(velocity.x) > 0.1f) {
-				newAnimation = "run";
+				if (!attackTimer.IsStopped()) {
+					newAnimation = "runAttack1";
+				}
+				else {
+					newAnimation = "run";
+				}
 			} 
 			else {
-				if (Input.IsActionPressed("ui_down")) {
+				if (!attackTimer.IsStopped()) {
+					newAnimation = "attack1";
+				}
+				else if (Input.IsActionPressed("ui_down")) {
 					newAnimation = "crouch";
 				}
 				else {
@@ -185,21 +219,55 @@ public class Hero : Actor
 			}
 		}
 		else {
-			
 			if (velocity.y > 0) {
-				newAnimation = "fall";
+				if (!attackTimer.IsStopped()) {
+					newAnimation = "airAttackEnd";
+				}
+				else {
+					newAnimation = "fall";
+				}
 			}
 			else {
-				newAnimation = "jump";
+				if (!attackTimer.IsStopped()) {
+					newAnimation = "airAttack";
+				}
+				else {
+					newAnimation = "jump";
+				}
+				
 			}
 		}
-		
-		if (isMagicCasting) {
-			newAnimation = "magic";
-		}
+
 		return newAnimation;
 	}
 	
+	public void Attack(int ID) {
+		if (ID == 1) {
+			stateMachine.Travel("attack1");
+		}
+		else if (ID == 2) {
+			stateMachine.Travel("attack2");
+		}
+		else if (ID == 3) {
+			stateMachine.Travel("attack3");
+		}
+	}
+	public void RunAttack(int ID) {
+		if (ID == 1) {
+			stateMachine.Travel("runAttack1");
+		}
+		else if (ID == 2) {
+			stateMachine.Travel("runAttack2");
+		}
+	}
+	public void AirAttack(int ID) {
+		if (ID == 1) {
+			stateMachine.Travel("airAttack");
+		}
+		else if (ID == 0) {
+			stateMachine.Travel("airAttackEnd");
+		}
+	}
 	public void Crouch() {
 		stateMachine.Travel("crouch");
 		if (collisionShapeCrouch.IsDisabled()) {
@@ -221,4 +289,15 @@ public class Hero : Actor
 	public void Run() {
 		stateMachine.Travel("run");
 	}
+	
+	private void OnAttackTimerTimeout()
+	{
+		Godot.Collections.Array attackShapes = attackArea.GetChildren();
+		foreach(CollisionShape2D shape in attackShapes) {
+			shape.Hide();
+		}
+	}
 }
+
+
+
