@@ -23,11 +23,13 @@ public class Hero : Actor
 
 	public Vector2 screenSize;
 	
+	public string attackAnimation;
 	public const float FLOOR_DETECT_DISTANCE = 50.0f;
 	
 	public override void _Ready() {
 		
 		screenSize = GetViewport().Size;
+		attackAnimation = "";
 
 		animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
 		attackTimer = GetNode<Timer>("AttackTimer");
@@ -116,7 +118,8 @@ public class Hero : Actor
 			attackTimer.Start();
 		}
 
-		string animation = GetNewAnimation();
+		string animation = "";
+		animation = GetNewAnimation();
 		
 		// if we have a new animation, we will Travel to it
 		if (animation != animationPlayer.CurrentAnimation) {
@@ -194,48 +197,109 @@ public class Hero : Actor
 		return direction;
 	}
 	
+//	public string GetNewAnimation() {
+//		string newAnimation = animationPlayer.CurrentAnimation;
+//		if (IsOnFloor()) {
+//			if (Mathf.Abs(velocity.x) > 0.1f) {
+//				if (!attackTimer.IsStopped()) {
+//					newAnimation = "runAttack1";
+//				}
+//				else {
+//					newAnimation = "run";
+//				}
+//			} 
+//			else {
+//				if (!attackTimer.IsStopped()) {
+//					newAnimation = "attack1";
+//				}
+//				else if (Input.IsActionPressed("ui_down")) {
+//					newAnimation = "crouch";
+//				}
+//				else {
+//					newAnimation = "idle";
+//				}
+//			}
+//		}
+//		else {
+//			if (velocity.y > 0) {
+//				if (!attackTimer.IsStopped() && Input.IsActionPressed("ui_down")) {
+//					newAnimation = "airAttackEnd";
+//				}
+//				else {
+//					newAnimation = "fall";
+//				}
+//			}
+//			else if (velocity.y <= 0) {
+//				if (!attackTimer.IsStopped()) {
+//					newAnimation = "airAttack";
+//				}
+//				else {
+//					newAnimation = "jump";
+//				}
+//
+//			}
+//		}
+//
+//		return newAnimation;
+//	}
+
 	public string GetNewAnimation() {
 		string newAnimation = animationPlayer.CurrentAnimation;
-		if (IsOnFloor()) {
-			
-			if (Mathf.Abs(velocity.x) > 0.1f) {
-				if (!attackTimer.IsStopped()) {
+		if (attackAnimation != "") {
+			return attackAnimation;
+		}
+		// during attack
+		if (!attackTimer.IsStopped()) {
+			if (IsOnFloor()) {
+				if (Mathf.Abs(velocity.x) > 0.1f) {
 					newAnimation = "runAttack1";
+				} 
+				else {
+					newAnimation = "attack1";
+				}
+			}
+			else {
+				if (velocity.y > 0) {
+					if (Input.IsActionPressed("ui_down")) {
+						newAnimation = "airAttackEnd";
+					}
+					else {
+						newAnimation = "airAttack";	
+					}
+				}
+				else if (velocity.y <= 0) {
+					newAnimation = "airAttack";	
+				}
+			}
+			
+			attackAnimation = newAnimation;
+		}
+		else {
+			if (Mathf.Abs(velocity.x) > 0.1f) {
+				if (velocity.y > 0) {
+					newAnimation = "fall";
+				}
+				else if (velocity.y < 0) {
+					newAnimation = "jump";
 				}
 				else {
 					newAnimation = "run";
 				}
 			} 
 			else {
-				if (!attackTimer.IsStopped()) {
-					newAnimation = "attack1";
-				}
-				else if (Input.IsActionPressed("ui_down")) {
+				if (Input.IsActionPressed("ui_down")) {
 					newAnimation = "crouch";
+				}
+				else if (velocity.y > 0) {
+					newAnimation = "fall";
+				}
+				else if (velocity.y < 0) {
+					newAnimation = "jump";
 				}
 				else {
 					newAnimation = "idle";
 				}
-			}
-		}
-		else {
-			if (velocity.y > 0) {
-				if (!attackTimer.IsStopped()) {
-					newAnimation = "airAttackEnd";
-				}
-				else {
-					newAnimation = "fall";
-				}
-			}
-			else {
-				if (!attackTimer.IsStopped()) {
-					newAnimation = "airAttack";
-				}
-				else {
-					newAnimation = "jump";
-				}
-				
-			}
+			}			
 		}
 
 		return newAnimation;
@@ -266,6 +330,7 @@ public class Hero : Actor
 		}
 		else if (ID == 0) {
 			stateMachine.Travel("airAttackEnd");
+			velocity.y += 200.0f;
 		}
 	}
 	public void Crouch() {
@@ -290,14 +355,24 @@ public class Hero : Actor
 		stateMachine.Travel("run");
 	}
 	
-	private void OnAttackTimerTimeout()
-	{
+	public void FinishAttackAnimation() {
+		GD.Print("FinishAttackAnimation");
+		attackAnimation = "";
+//		attackTimer.Stop();
+	}
+	
+	private void ResetAttackShapes() {
 		Godot.Collections.Array attackShapes = attackArea.GetChildren();
 		foreach(CollisionShape2D shape in attackShapes) {
 			shape.Hide();
 		}
+		attackArea.Hide();
 	}
+	private void OnAttackTimerTimeout()
+	{
+//		GD.Print("OnAttackTimerTimeout");
+		ResetAttackShapes();
+	}
+
 }
-
-
 
