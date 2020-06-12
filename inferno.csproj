@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actors\Actor.cs" />
+    <Compile Include="Actors\Hero\Ball.cs" />
     <Compile Include="Actors\Hero\Hero.cs" />
     <Compile Include="Actors\Hero\Magic.cs" />
     <Compile Include="Actors\Mob\Mob.cs" />

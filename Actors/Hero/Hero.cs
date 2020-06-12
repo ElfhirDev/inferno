@@ -16,12 +16,14 @@ public class Hero : Actor
 	public Timer attackTimer;
 	public Camera2D camera;
 	public CollisionShape2D collisionShapeStanding, collisionShapeCrouch;
-//	public Timer magicTimer;
+	
+	public Magic magic;
 	public RayCast2D rayJump;
 	public Sprite sprite;
 	public CollisionShape2D swordShape;
 
 	public Vector2 screenSize;
+	
 	
 	public string attackAnimation;
 	public const float FLOOR_DETECT_DISTANCE = 50.0f;
@@ -39,6 +41,7 @@ public class Hero : Actor
 		collisionShapeStanding = GetNode<CollisionShape2D>("Standing");
 		collisionShapeCrouch = GetNode<CollisionShape2D>("Crouch");
 //		magicTimer = GetNode<Timer>("MagicAnimation");
+		magic = GetNode<Magic>("Sprite/Magic");
 		rayJump = GetNode<RayCast2D>("RayJump");
 		sprite = GetNode<Sprite>("Sprite");
 		stateMachine = (AnimationNodeStateMachinePlayback)animationTree.Get("parameters/playback");
@@ -110,9 +113,12 @@ public class Hero : Actor
 		
 		// TODO casting magic 
 		bool isMagicCasting = false;
-//		if (Input.IsActionJustPressed("ui_magic")) {
-//			isMagicCasting = true; 
-//		}
+		if (Input.IsActionJustPressed("ui_magic")) {
+			isMagicCasting = true;
+			float direc = GetLookingDirection().x;
+			
+			magic.Shoot(direc);
+		}
 		
 		if (Input.IsActionJustReleased("ui_attack") && attackTimer.IsStopped()) {
 			attackTimer.Start();
@@ -195,6 +201,14 @@ public class Hero : Actor
 		
 		Vector2 direction = new Vector2(x,y);
 		return direction;
+	}
+	
+	public Vector2 GetLookingDirection() {
+		Vector2 movingDirection = GetDirection();
+		if (movingDirection.x == 0) {
+			movingDirection.x = GetScale().y;
+		}	
+		return movingDirection;
 	}
 	
 //	public string GetNewAnimation() {
