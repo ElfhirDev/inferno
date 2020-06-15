@@ -1,0 +1,283 @@
+[gd_scene load_steps=31 format=2]
+
+[ext_resource path="res://Actors/Mob/Slime/Slime.cs" type="Script" id=1]
+[ext_resource path="res://Actors/Mob/Slime/slime-Sheet.png" type="Texture" id=2]
+[ext_resource path="res://SoundFX/magicball/magicball.wav" type="AudioStream" id=3]
+[ext_resource path="res://Actors/Hero/Magic.cs" type="Script" id=4]
+[ext_resource path="res://SoundFX/enemy_slime_die/enemy_slime_die.wav" type="AudioStream" id=8]
+[ext_resource path="res://SoundFX/enemy_slime_move/enemy_slime_move.wav" type="AudioStream" id=9]
+[ext_resource path="res://SoundFX/enemy_attack_bubble/enemy_attack_bubble.wav" type="AudioStream" id=10]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 56, 32 )
+
+[sub_resource type="AnimationNodeAnimation" id=78]
+animation = "attack1"
+
+[sub_resource type="AnimationNodeAnimation" id=79]
+animation = "die"
+
+[sub_resource type="AnimationNodeAnimation" id=80]
+animation = "hurt"
+
+[sub_resource type="AnimationNodeAnimation" id=81]
+animation = "idle"
+
+[sub_resource type="AnimationNodeAnimation" id=82]
+animation = "run"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=83]
+switch_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=84]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=85]
+switch_mode = 2
+auto_advance = true
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=86]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=87]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=88]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=89]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=90]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=91]
+
+[sub_resource type="AnimationNodeStateMachine" id=77]
+states/attack1/node = SubResource( 78 )
+states/attack1/position = Vector2( 592, 255 )
+states/die/node = SubResource( 79 )
+states/die/position = Vector2( 812, 138 )
+states/hurt/node = SubResource( 80 )
+states/hurt/position = Vector2( 592, 138 )
+states/idle/node = SubResource( 81 )
+states/idle/position = Vector2( 398, 138 )
+states/run/node = SubResource( 82 )
+states/run/position = Vector2( 398, 255 )
+transitions = [ "hurt", "die", SubResource( 83 ), "idle", "hurt", SubResource( 84 ), "hurt", "idle", SubResource( 85 ), "idle", "attack1", SubResource( 86 ), "idle", "run", SubResource( 87 ), "run", "idle", SubResource( 88 ), "run", "attack1", SubResource( 89 ), "attack1", "idle", SubResource( 90 ), "attack1", "run", SubResource( 91 ) ]
+start_node = "idle"
+end_node = "die"
+
+[sub_resource type="AnimationNodeStateMachinePlayback" id=45]
+
+[sub_resource type="Animation" id=48]
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4, 0.6, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 8, 9, 10, 11, 12 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("AttackArea:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = false
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.4, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("AttackArea/Attack1:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.4, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ true, false, true ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("AttackArea/Attack1:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.4, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false ]
+}
+tracks/4/type = "method"
+tracks/4/path = NodePath(".")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0.8 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "FinishAttackAnimation"
+} ]
+}
+
+[sub_resource type="Animation" id=53]
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4, 0.6, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 17, 18, 19, 20, 21 ]
+}
+
+[sub_resource type="Animation" id=76]
+resource_name = "hurt"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.15, 0.3, 0.45 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 13, 14, 15, 16 ]
+}
+
+[sub_resource type="Animation" id=58]
+length = 0.8
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
+}
+
+[sub_resource type="Animation" id=66]
+length = 0.8
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4, 0.6, 1 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 4, 5, 6, 7, 13 ]
+}
+
+[sub_resource type="RectangleShape2D" id=72]
+extents = Vector2( 56, 48 )
+
+[node name="Slime" type="KinematicBody2D"]
+z_index = 1
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="RunTimer" type="Timer" parent="."]
+wait_time = 8.0
+
+[node name="IdleTimer" type="Timer" parent="."]
+process_mode = 0
+wait_time = 5.0
+one_shot = true
+
+[node name="AttackTimer" type="Timer" parent="."]
+process_mode = 0
+one_shot = true
+
+[node name="MagicTimer" type="Timer" parent="."]
+process_mode = 0
+wait_time = 0.3
+one_shot = true
+
+[node name="Sprite" type="Sprite" parent="."]
+scale = Vector2( 3, 3 )
+texture = ExtResource( 2 )
+flip_h = true
+vframes = 3
+hframes = 8
+frame = 10
+region_enabled = true
+region_rect = Rect2( 0, 0, 256, 75 )
+
+[node name="Magic" type="Position2D" parent="Sprite"]
+position = Vector2( 10, 5 )
+script = ExtResource( 4 )
+
+[node name="Shoot" type="AudioStreamPlayer2D" parent="Sprite/Magic"]
+stream = ExtResource( 3 )
+
+[node name="Cooldown" type="Timer" parent="Sprite/Magic"]
+process_mode = 0
+wait_time = 0.4
+one_shot = true
+
+[node name="Standing" type="CollisionShape2D" parent="."]
+position = Vector2( 0, 8 )
+shape = SubResource( 2 )
+
+[node name="RayJump" type="RayCast2D" parent="."]
+cast_to = Vector2( 200, 0 )
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource( 77 )
+anim_player = NodePath("../AnimationPlayer")
+active = true
+parameters/playback = SubResource( 45 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/attack1 = SubResource( 48 )
+anims/die = SubResource( 53 )
+anims/hurt = SubResource( 76 )
+anims/idle = SubResource( 58 )
+anims/run = SubResource( 66 )
+
+[node name="AttackArea" type="Area2D" parent="."]
+
+[node name="Attack1" type="CollisionShape2D" parent="AttackArea"]
+modulate = Color( 0.0117647, 0.0117647, 0.0117647, 1 )
+position = Vector2( 40, 0 )
+shape = SubResource( 72 )
+
+[node name="Sounds" type="Node" parent="."]
+
+[node name="Slime" type="Node" parent="Sounds"]
+
+[node name="Footstep" type="AudioStreamPlayer" parent="Sounds/Slime"]
+stream = ExtResource( 9 )
+
+[node name="Attack" type="AudioStreamPlayer" parent="Sounds/Slime"]
+stream = ExtResource( 10 )
+
+[node name="Die" type="AudioStreamPlayer" parent="Sounds/Slime"]
+stream = ExtResource( 8 )
+[connection signal="timeout" from="AttackTimer" to="." method="OnAttackTimerTimeout"]
+[connection signal="timeout" from="MagicTimer" to="." method="OnMagicTimerTimeout"]

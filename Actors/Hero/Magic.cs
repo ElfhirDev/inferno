@@ -27,12 +27,13 @@ public class Magic : Position2D
 			return false;
 		}
 //		ball.SetGlobalPosition(GetGlobalPosition());
+
+		ball.SetPosition(GetGlobalPosition());
 		Vector2 impulse = new Vector2(direction * BULLET_VELOCITY, 0);
 		Vector2 offset = Vector2.Zero;
 		ball.ApplyImpulse(offset, impulse);
-//		ball.LinearVelocity = new Vector2(direction * BULLET_VELOCITY, 0);
-//		ball.SetAsTopLevel(true);
-		AddChild(ball);
+
+		GetTree().GetRoot().AddChild(ball);
 		shootSound.Play();
 		return true;
 	}

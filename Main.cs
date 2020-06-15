@@ -5,7 +5,7 @@ public class Main : Node2D
 {
 	
 	[Export]
-	public PackedScene Mob;
+	public PackedScene Slime;
 
 	private int _score;
 
@@ -32,7 +32,7 @@ public class Main : Node2D
 	}
 
 	private void GameOver() {
-		GetNode<Timer>("MobTimer").Stop();
+		GetNode<Timer>("SlimeTimer").Stop();
 		GetNode<Timer>("ScoreTimer").Stop();
 	}
 	
@@ -48,25 +48,25 @@ public class Main : Node2D
 	
 	
 	
-	private void OnMobTimerTimeout() {
-		GD.Print("OnMobTimerTimeout");
+	private void OnSlimeTimerTimeout() {
+		GD.Print("OnSlimeTimerTimeout");
 		// Choose a random location on Path2D.
 
-		var mobStartPosition = GetNode<Position2D>("MobStartPosition");
+		var slimeStartPosition = GetNode<Position2D>("SlimeStartPosition");
 		
-		// Create a Mob instance and add it to the scene.
-		var mobInstance = (KinematicBody2D)Mob.Instance();
-		AddChild(mobInstance);
+		// Create a Slime instance and add it to the scene.
+		var slimeInstance = (KinematicBody2D)Slime.Instance();
+		AddChild(slimeInstance);
 		
-		// Set the mob's position to a random location.
-		mobInstance.Position = mobStartPosition.Position;
+		// Set the slime's position to a random location.
+		slimeInstance.Position = slimeStartPosition.Position;
 		
 		// Add some randomness to the direction.
 //		direction += RandRange(-Mathf.Pi / 4, Mathf.Pi / 4);
-//		mobInstance.Rotation = direction;
+//		slimeInstance.Rotation = direction;
 		
 		// Choose the velocity.
-//		mobInstance.SetLinearVelocity(new Vector2(RandRange(150f, 250f), 0));
+//		slimeInstance.SetLinearVelocity(new Vector2(RandRange(150f, 250f), 0));
 	}
 	
 	
@@ -76,7 +76,7 @@ public class Main : Node2D
 	
 	
 	private void OnStartTimerTimeout() {
-		GetNode<Timer>("MobTimer").Start();
+		GetNode<Timer>("SlimeTimer").Start();
 		GetNode<Timer>("ScoreTimer").Start();
 	}
 

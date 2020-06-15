@@ -58,6 +58,7 @@
     <Compile Include="Actors\Hero\Hero.cs" />
     <Compile Include="Actors\Hero\Magic.cs" />
     <Compile Include="Actors\Mob\Mob.cs" />
+    <Compile Include="Actors\Mob\Slime\Slime.cs" />
     <Compile Include="CS_FSM.cs" />
     <Compile Include="Levels\StaticBody2D.cs" />
     <Compile Include="Main.cs" />
