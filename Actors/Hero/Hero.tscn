@@ -350,6 +350,18 @@ tracks/4/keys = {
 "method": "FinishAttackAnimation"
 } ]
 }
+tracks/5/type = "value"
+tracks/5/path = NodePath("AttackArea:monitoring")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 0.3, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false ]
+}
 
 [sub_resource type="Animation" id=48]
 length = 0.6
@@ -782,6 +794,18 @@ tracks/4/keys = {
 "method": "FinishAttackAnimation"
 } ]
 }
+tracks/5/type = "value"
+tracks/5/path = NodePath("AttackArea:monitoring")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 0.2, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false ]
+}
 
 [sub_resource type="Animation" id=67]
 length = 0.6
@@ -935,7 +959,7 @@ scale = Vector2( 4, 4 )
 texture = ExtResource( 2 )
 vframes = 16
 hframes = 7
-frame = 2
+frame = 1
 region_rect = Rect2( 0, 0, 49, 42 )
 
 [node name="Magic" type="Position2D" parent="Sprite"]
@@ -1002,6 +1026,8 @@ anims/slide = SubResource( 69 )
 anims/wallslide = SubResource( 70 )
 
 [node name="AttackArea" type="Area2D" parent="."]
+visible = false
+monitoring = false
 
 [node name="Attack1" type="CollisionShape2D" parent="AttackArea"]
 visible = false
@@ -1038,7 +1064,6 @@ position = Vector2( -20, 20 )
 shape = SubResource( 76 )
 
 [node name="AirAttack" type="CollisionShape2D" parent="AttackArea"]
-visible = false
 position = Vector2( 8, 16 )
 shape = SubResource( 77 )
 
@@ -1081,3 +1106,4 @@ stream = ExtResource( 10 )
 stream = ExtResource( 8 )
 [connection signal="timeout" from="AttackTimer" to="." method="OnAttackTimerTimeout"]
 [connection signal="timeout" from="MagicTimer" to="." method="OnMagicTimerTimeout"]
+[connection signal="body_entered" from="AttackArea" to="." method="OnAttackAreaBodyEntered"]

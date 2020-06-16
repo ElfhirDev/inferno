@@ -4,8 +4,12 @@ using System;
 public class Magic : Position2D
 {
 
-
+	[Export]
 	public float BULLET_VELOCITY = 300.0f;
+	
+	[Export]
+	public float Force = 50.0f;
+	
 	public PackedScene ballScene;
 	public RigidBody2D ball;
 	

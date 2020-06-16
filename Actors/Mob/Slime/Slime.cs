@@ -3,10 +3,17 @@ using Godot;
 using Godot.Collections;
 
 
-public class Slime  : Actor
+public class Slime : Actor
 {
 	[Export]
 	public int jumpForce = 420;
+
+	[Export]
+	public float HP = 300.0f;
+	
+	[Export]
+	public float Force = 100.0f;
+	
 	protected Vector2 speed = new Vector2(120.0f, 200.0f);
 	protected Vector2 direction = new Vector2(1, 1);
 	
@@ -18,13 +25,15 @@ public class Slime  : Actor
 	public Timer attackTimer;
 	public Timer magicTimer;
 	public Timer idleTimer;
+	public Timer runTimer;
+	public Timer dieTimer;
 
 	public CollisionShape2D collisionShapeStanding;
 	
 	public Magic magic;
-	public RayCast2D rayJump;
+	public RayCast2D rayDetect;
 	public Sprite sprite;
-	public CollisionShape2D swordShape;
+	public CollisionShape2D attackShape;
 	
 	public AudioStreamPlayer sfx_footstep, sfx_attack1, sfx_jump, 
 		sfx_hurt, sfx_die;
@@ -35,6 +44,10 @@ public class Slime  : Actor
 	public string attackAnimation;
 	public bool isMagicCasting;
 	public const float FLOOR_DETECT_DISTANCE = 50.0f;
+	
+		
+	[Signal]
+	public delegate void LifePointEmpty();
 	
 	public override void _Ready() {
 		
@@ -50,8 +63,10 @@ public class Slime  : Actor
 
 		magicTimer = GetNode<Timer>("MagicTimer");
 		idleTimer = GetNode<Timer>("IdleTimer");
+		runTimer = GetNode<Timer>("RunTimer");
+		dieTimer = GetNode<Timer>("DieTimer");
 		magic = GetNode<Magic>("Sprite/Magic");
-		rayJump = GetNode<RayCast2D>("RayJump");
+		rayDetect = GetNode<RayCast2D>("RayDetect");
 		sprite = GetNode<Sprite>("Sprite");
 		stateMachine = (AnimationNodeStateMachinePlayback)animationTree.Get("parameters/playback");
 		
@@ -60,8 +75,8 @@ public class Slime  : Actor
 		sfx_die = GetNode<AudioStreamPlayer>("Sounds/Slime/Die");
 //		sfx_magicAttack = GetNode<AudioStreamPlayer>("Sounds/MagicAttack");
 
-		
-		GD.Print("Hero Ready");
+		idleTimer.Start();
+		GD.Print("Slime Ready");
 //		GD.Print(stateMachine);
 	}
 	
@@ -78,13 +93,32 @@ public class Slime  : Actor
 		if (IsOnWall()) {
 			SetDirection(direction, true);
 		}
+		else {
+			if (rayDetect.IsColliding()) {
+				var collider =  rayDetect.GetCollider();
+				
+				if (collider is Hero) {
+					
+				}
+			}
+		}
+		
+
+		
 		
 		// default gravity is too weak but I want to keep the 9.81 value.
 		velocity.y += 4.0f * float.Parse(gravity.ToString()) * delta;
 		
-		velocity = CalculateMoveVelocity(
-			velocity, direction, speed, false
-		);
+		if (!idleTimer.IsStopped()) {
+			velocity = CalculateMoveVelocity(
+				velocity, direction, 0*speed, false
+			);
+		}
+		else if (!runTimer.IsStopped()) {
+			velocity = CalculateMoveVelocity(
+				velocity, direction, speed, false
+			);
+		}
 		
 		Vector2 snapVector = Vector2.Zero;
 		if (direction.y == 0.0) {
@@ -93,11 +127,10 @@ public class Slime  : Actor
 			snapVector = Vector2.Zero;
 		}
 				
-		bool isOnPlatform = rayJump.IsColliding();
-		
+
 		// move on surface and snap on it
 		velocity = MoveAndSlideWithSnap(
-			velocity, snapVector, FLOOR_NORMAL, !isOnPlatform, 4, 0.9f, false
+			velocity, snapVector, FLOOR_NORMAL, true, 4, 0.9f, false
 		);
 
 		
@@ -125,16 +158,9 @@ public class Slime  : Actor
 			
 		}
 		
-		
-		// TODO casting magic 
-
-		
-		if (idleTimer.IsStopped() && attackTimer.IsStopped()) {
-			attackTimer.Start();
-		}
-
 		string animation = "";
 		animation = GetNewAnimation();
+		
 		
 		// if we have a new animation, we will Travel to it
 		if (animation != animationPlayer.CurrentAnimation) {
@@ -150,6 +176,32 @@ public class Slime  : Actor
 			}
 
 		}
+		
+	}
+	
+	private void OnAttackTimerTimeout()
+	{
+		
+	}
+
+	private void OnMagicTimerTimeout()
+	{
+		
+	}
+	
+	private void OnIdleTimerTimeout()
+	{
+		runTimer.Start();
+	}
+
+
+	private void OnRunTimerTimeout()
+	{
+		idleTimer.Start();
+	}
+	
+	private void OnDieTimerTimeout()
+	{
 		
 	}
 	
@@ -199,6 +251,10 @@ public class Slime  : Actor
 	public string GetNewAnimation() {
 		string newAnimation = animationPlayer.CurrentAnimation;
 		
+		if (!dieTimer.IsStopped()) {
+			return newAnimation;
+		}
+		
 		// Play attack animation till the end
 		if (attackAnimation != "") {
 			return attackAnimation;
@@ -212,10 +268,10 @@ public class Slime  : Actor
 			attackAnimation = newAnimation;
 		}
 		else {
-			if (Mathf.Abs(velocity.x) > 0.1f) {
+			if (Mathf.Abs(velocity.x) > 0.1f && !runTimer.IsStopped()) {
 				newAnimation = "run";
 			} 
-			else {
+			else if (!idleTimer.IsStopped()){
 				newAnimation = "idle";
 			}			
 		}
@@ -255,17 +311,25 @@ public class Slime  : Actor
 		}
 		attackArea.Hide();
 	}
-	private void OnAttackTimerTimeout()
-	{
-//		GD.Print("OnAttackTimerTimeout");
-//		ResetAttackShapes();
+	
+	public void LoseHP(float ActorForce) {
+		HP -= ActorForce;
+		if (HP <= 0.0f) {
+			EmitSignal(nameof(LifePointEmpty));
+		}
 	}
 
-	private void OnMagicTimerTimeout()
+	
+	private void OnLifePointEmpty()
 	{
-		// Replace with function body.
+		dieTimer.Start();
+		stateMachine.Travel("die");
 	}
+
 }
+
+
+
 
 
 

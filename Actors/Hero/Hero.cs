@@ -8,6 +8,14 @@ public class Hero : Actor
 	[Export]
 	public int jumpForce = 420;
 	
+	[Export]
+	public float HP = 1000.0f;
+	
+	[Export]
+	public float Force = 100.0f;
+	
+
+	
 	public AnimationPlayer animationPlayer;
 	public AnimationTree animationTree;
 	public AnimationNodeStateMachinePlayback stateMachine;	
@@ -304,8 +312,6 @@ public class Hero : Actor
 	}
 	
 	public void Attack(int ID) {
-
-		
 		if (ID == 1) {
 			if (!sfx_attack1.IsPlaying()) {
 				sfx_attack1.Play();
@@ -398,7 +404,32 @@ public class Hero : Actor
 	{
 		// Replace with function body.
 	}
+	
+	private void OnAttackAreaBodyEntered(object body)
+	{
+		if (body is Actor) {
+			if (body is Slime) {
+				Damage(body);
+			}
+		}
+	}
+	
+	public void Damage(object body) {
+		if (body is Slime) {
+			Slime slime = (Slime)body;
+			slime.LoseHP(Force);
+		}
+	}
+
+//	[Signal]
+//	public delegate void OnZeroHP() {
+//
+//	}
+
 }
+
+
+
 
 
 
