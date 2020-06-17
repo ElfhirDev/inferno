@@ -149,7 +149,7 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0.8 ),
+"times": PoolRealArray( 0.6 ),
 "transitions": PoolRealArray( 1 ),
 "values": [ {
 "args": [  ],
@@ -216,6 +216,7 @@ __meta__ = {
 }
 
 [node name="RunTimer" type="Timer" parent="."]
+process_mode = 0
 wait_time = 5.0
 one_shot = true
 
@@ -228,13 +229,20 @@ one_shot = true
 process_mode = 0
 one_shot = true
 
+[node name="HurtTimer" type="Timer" parent="."]
+process_mode = 0
+wait_time = 0.6
+one_shot = true
+
 [node name="MagicTimer" type="Timer" parent="."]
 process_mode = 0
 wait_time = 0.3
 one_shot = true
 
 [node name="DieTimer" type="Timer" parent="."]
-wait_time = 1.2
+process_mode = 0
+wait_time = 2.0
+one_shot = true
 
 [node name="Sprite" type="Sprite" parent="."]
 scale = Vector2( 3, 3 )
@@ -242,7 +250,7 @@ texture = ExtResource( 2 )
 flip_h = true
 vframes = 3
 hframes = 8
-frame = 2
+frame = 3
 region_enabled = true
 region_rect = Rect2( 0, 0, 256, 75 )
 
@@ -302,8 +310,11 @@ stream = ExtResource( 10 )
 [node name="Die" type="AudioStreamPlayer" parent="Sounds/Slime"]
 stream = ExtResource( 8 )
 [connection signal="LifePointEmpty" from="." to="." method="OnLifePointEmpty"]
+[connection signal="LifePointLoss" from="." to="." method="OnLifePointLoss"]
 [connection signal="timeout" from="RunTimer" to="." method="OnRunTimerTimeout"]
 [connection signal="timeout" from="IdleTimer" to="." method="OnIdleTimerTimeout"]
 [connection signal="timeout" from="AttackTimer" to="." method="OnAttackTimerTimeout"]
+[connection signal="timeout" from="HurtTimer" to="." method="OnHurtTimerTimeout"]
 [connection signal="timeout" from="MagicTimer" to="." method="OnMagicTimerTimeout"]
 [connection signal="timeout" from="DieTimer" to="." method="OnDieTimerTimeout"]
+[connection signal="body_entered" from="AttackArea" to="." method="OnAttackAreaBodyEntered"]

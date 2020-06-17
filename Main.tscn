@@ -51,7 +51,7 @@ __meta__ = {
 }
 
 [node name="SlimeStartPosition" type="Position2D" parent="."]
-position = Vector2( 1920, 536 )
+position = Vector2( 1920, 546 )
 __meta__ = {
 "_edit_group_": true
 }

@@ -523,6 +523,7 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id=52]
+length = 2.0
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -530,10 +531,24 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.3, 0.4, 0.8 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.1, 0.3, 0.4, 0.8, 1 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 64, 65, 66, 67, 68 ]
+"values": [ 64, 65, 66, 67, 68, 111 ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 1 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "queue_free"
+} ]
 }
 
 [sub_resource type="Animation" id=53]
@@ -944,6 +959,16 @@ __meta__ = {
 "_edit_group_": true
 }
 
+[node name="DieTimer" type="Timer" parent="."]
+process_mode = 0
+wait_time = 2.0
+one_shot = true
+
+[node name="HurtTimer" type="Timer" parent="."]
+process_mode = 0
+wait_time = 0.6
+one_shot = true
+
 [node name="AttackTimer" type="Timer" parent="."]
 process_mode = 0
 wait_time = 0.6
@@ -959,7 +984,7 @@ scale = Vector2( 4, 4 )
 texture = ExtResource( 2 )
 vframes = 16
 hframes = 7
-frame = 1
+frame = 2
 region_rect = Rect2( 0, 0, 49, 42 )
 
 [node name="Magic" type="Position2D" parent="Sprite"]
@@ -1026,7 +1051,6 @@ anims/slide = SubResource( 69 )
 anims/wallslide = SubResource( 70 )
 
 [node name="AttackArea" type="Area2D" parent="."]
-visible = false
 monitoring = false
 
 [node name="Attack1" type="CollisionShape2D" parent="AttackArea"]
@@ -1104,6 +1128,10 @@ stream = ExtResource( 10 )
 
 [node name="Die" type="AudioStreamPlayer" parent="Sounds/Slime"]
 stream = ExtResource( 8 )
+[connection signal="LifePointEmpty" from="." to="." method="OnLifePointEmpty"]
+[connection signal="LifePointLoss" from="." to="." method="OnLifePointLoss"]
+[connection signal="timeout" from="DieTimer" to="." method="OnDieTimerTimeout"]
+[connection signal="timeout" from="HurtTimer" to="." method="OnHurtTimerTimeout"]
 [connection signal="timeout" from="AttackTimer" to="." method="OnAttackTimerTimeout"]
 [connection signal="timeout" from="MagicTimer" to="." method="OnMagicTimerTimeout"]
 [connection signal="body_entered" from="AttackArea" to="." method="OnAttackAreaBodyEntered"]

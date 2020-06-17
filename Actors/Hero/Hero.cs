@@ -23,6 +23,8 @@ public class Hero : Actor
 	public Area2D attackArea;
 	public Timer attackTimer;
 	public Timer magicTimer;
+	public Timer hurtTimer;
+	public Timer dieTimer;
 	public Camera2D camera;
 	public CollisionShape2D collisionShapeStanding, collisionShapeCrouch;
 	
@@ -37,6 +39,11 @@ public class Hero : Actor
 
 	public Vector2 screenSize;
 	
+	[Signal]
+	public delegate void LifePointEmpty();
+	
+	[Signal]
+	public delegate void LifePointLoss();
 	
 	public string attackAnimation;
 	public bool isMagicCasting;
@@ -55,6 +62,8 @@ public class Hero : Actor
 		collisionShapeStanding = GetNode<CollisionShape2D>("Standing");
 		collisionShapeCrouch = GetNode<CollisionShape2D>("Crouch");
 		magicTimer = GetNode<Timer>("MagicTimer");
+		dieTimer = GetNode<Timer>("DieTimer");
+		hurtTimer = GetNode<Timer>("HurtTimer");
 		magic = GetNode<Magic>("Sprite/Magic");
 		rayJump = GetNode<RayCast2D>("RayJump");
 		sprite = GetNode<Sprite>("Sprite");
@@ -246,6 +255,14 @@ public class Hero : Actor
 	public string GetNewAnimation() {
 		string newAnimation = animationPlayer.CurrentAnimation;
 		
+		if (!dieTimer.IsStopped()) {
+			return newAnimation;
+		}
+		
+		if (!hurtTimer.IsStopped()) {
+			return newAnimation;
+		}
+		
 		// Play attack animation till the end
 		if (attackAnimation != "") {
 			return attackAnimation;
@@ -405,31 +422,55 @@ public class Hero : Actor
 		// Replace with function body.
 	}
 	
+	private void OnDieTimerTimeout()
+	{
+		// Replace with function body.
+	}
+	
+	private void OnHurtTimerTimeout()
+	{
+		// Replace with function body.
+	}	
+
 	private void OnAttackAreaBodyEntered(object body)
 	{
 		if (body is Actor) {
 			if (body is Slime) {
-				Damage(body);
+				DamageTo(body);
 			}
 		}
 	}
+
+	public void LoseHP(float ActorForce) {
+		HP -= ActorForce;
+		if (HP <= 0.0f) {
+			EmitSignal(nameof(LifePointEmpty));
+		}
+		else {
+			EmitSignal(nameof(LifePointLoss));
+		}
+		GD.Print(HP);
+	}
+
+	private void OnLifePointEmpty()
+	{
+		dieTimer.Start();
+		stateMachine.Travel("die");
+	}
 	
-	public void Damage(object body) {
+
+	private void OnLifePointLoss()
+	{
+		hurtTimer.Start();
+		stateMachine.Travel("hurt");
+	}
+	
+	public void DamageTo(object body) {
 		if (body is Slime) {
 			Slime slime = (Slime)body;
 			slime.LoseHP(Force);
 		}
 	}
 
-//	[Signal]
-//	public delegate void OnZeroHP() {
-//
-//	}
 
 }
-
-
-
-
-
-
