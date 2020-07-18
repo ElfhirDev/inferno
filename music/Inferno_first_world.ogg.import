@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Inferno_first_world.ogg-9a486aea7aa07277d0b87fb1c2a40ff4.oggstr"
+
+[deps]
+
+source_file="res://music/Inferno_first_world.ogg"
+dest_files=[ "res://.import/Inferno_first_world.ogg-9a486aea7aa07277d0b87fb1c2a40ff4.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

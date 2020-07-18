@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/runAttack1.wav-668836d38f017920c205d17b8b25c9be.sample"
+
+[deps]
+
+source_file="res://SoundFX/attacksword/runAttack1.wav"
+dest_files=[ "res://.import/runAttack1.wav-668836d38f017920c205d17b8b25c9be.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=true
+edit/loop=false
+compress/mode=0

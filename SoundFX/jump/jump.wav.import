@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/jump.wav-1ba8f7fe9d45fe9634d41ac9917e4999.sample"
+
+[deps]
+
+source_file="res://SoundFX/jump/jump.wav"
+dest_files=[ "res://.import/jump.wav-1ba8f7fe9d45fe9634d41ac9917e4999.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=true
+edit/loop=false
+compress/mode=0

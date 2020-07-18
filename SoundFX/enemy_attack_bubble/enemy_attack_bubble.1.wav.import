@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/enemy_attack_bubble.1.wav-8a436042b0c146e948874e9050ba24ef.sample"
+
+[deps]
+
+source_file="res://SoundFX/enemy_attack_bubble/enemy_attack_bubble.1.wav"
+dest_files=[ "res://.import/enemy_attack_bubble.1.wav-8a436042b0c146e948874e9050ba24ef.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=true
+edit/loop=false
+compress/mode=0

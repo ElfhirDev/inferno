@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/airAttack1.1.wav-02b8ae9ed2cb4fc3b01aa649ab838965.sample"
+
+[deps]
+
+source_file="res://SoundFX/attacksword/airAttack1.1.wav"
+dest_files=[ "res://.import/airAttack1.1.wav-02b8ae9ed2cb4fc3b01aa649ab838965.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=true
+edit/loop=false
+compress/mode=0
